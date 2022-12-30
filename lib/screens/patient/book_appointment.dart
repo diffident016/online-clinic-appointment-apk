@@ -15,7 +15,10 @@ import '../../models/schedule.dart';
 
 class BookAppointment extends StatefulWidget {
   final Patient patient;
-  const BookAppointment({Key? key, required this.patient}) : super(key: key);
+  final VoidCallback updateAppointment;
+  const BookAppointment(
+      {Key? key, required this.patient, required this.updateAppointment})
+      : super(key: key);
 
   @override
   BookAppointmentState createState() => BookAppointmentState();
@@ -194,6 +197,9 @@ class BookAppointmentState extends State<BookAppointment> {
               finalSchedCheck: finalSchedCheck,
               checkAvailableSlot: () {
                 checkAvailableSlot();
+              },
+              updateAppointment: () {
+                widget.updateAppointment();
               },
             )
           ],

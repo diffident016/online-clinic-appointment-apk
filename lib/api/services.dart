@@ -70,6 +70,19 @@ class Services {
     }
   }
 
+  static Future<http.Response> getPatientProfile() async {
+    final String route = 'filters[account][email]=${UserAccount.user!.email}';
+
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/patients?$route&populate=%2A",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
   static saveAppointment(String id) async {
     Appointment? appointment;
     await getAppointment(id).then((value) {
@@ -79,6 +92,14 @@ class Services {
 
     try {
       await _storage.write(key: 'appointment', value: jsonEncode(appointment!));
+    } on Exception catch (_) {
+      return null;
+    }
+  }
+
+  static saveIllnesses(List<String> illnesses) async {
+    try {
+      await _storage.write(key: 'illnesses', value: jsonEncode(illnesses));
     } on Exception catch (_) {
       return null;
     }
@@ -108,7 +129,7 @@ class Services {
 
   static Future<http.Response> bookAppointment(Appointment appointment) async {
     Schedule? fSchedule;
-    int? imageId;
+    String? image;
 
     await _bookSchedule(appointment.schedule).then((response) {
       Map parse = json.decode(response.body);
@@ -116,10 +137,8 @@ class Services {
       fSchedule = Schedule.fromJson(parse["data"]);
     });
 
-    await uploadImage(appointment.media!).then((response) {
-      Map parse = json.decode(response.body)[0];
-
-      imageId = parse["id"];
+    await convertToBase64(appointment.media!).then((response) {
+      image = response;
     });
 
     return await http.post(
@@ -137,32 +156,45 @@ class Services {
             "patient": appointment.patient.id,
             "payment": appointment.payment,
             "remarks": appointment.remarks,
-            "gcash_payment": imageId
+            "gcash_payment": image,
+            "illness": appointment.illness,
+            "status": appointment.status
           }
         }));
   }
 
-  static Future<http.Response> uploadImage(File imageFile) async {
-    var request =
-        http.MultipartRequest('POST', Uri.parse('$apiAddress/api/upload'));
-    var imagebytes = await imageFile.readAsBytes();
-    List<int> listData = imagebytes.cast();
-    request.files.add(http.MultipartFile.fromBytes('files', listData,
-        filename: imageFile.path.split('image_picker').last,
-        contentType: MediaType.parse('image/jpeg')));
+  static Future convertToBase64(File imageFile) async {
+    List<int> imageBytes = await imageFile.readAsBytes();
 
-    request.headers.addAll({'Authorization': 'Bearer $_token'});
-    var response = await request.send();
-
-    return response.stream
-        .toBytes()
-        .then((value) => http.Response.bytes(value, response.statusCode));
+    return base64Encode(imageBytes);
   }
 
   static Future<http.Response> getSchedules() async {
     return await http.get(
       Uri.parse(
         "$apiAddress/api/schedules",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static Future<http.Response> getIllnesses() async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/illnesses",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static Future<http.Response> getAppoinments(String route) async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/appointments?$route&populate=%2A",
       ),
       headers: <String, String>{
         'Authorization': 'Bearer $_token',

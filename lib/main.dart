@@ -17,11 +17,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ONCASS',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: 'Poppins',
-          backgroundColor: backgroundColor,
-          appBarTheme: appBarTheme),
-      
+        primarySwatch: Colors.blue,
+        fontFamily: 'Poppins',
+        backgroundColor: backgroundColor,
+        appBarTheme: appBarTheme,
+      ),
       home: UserSelect(),
     );
   }
