@@ -18,7 +18,7 @@ class AppointmentDataSource extends DataGridSource {
                   columnName: 'name', value: e.value.patient.name),
               DataGridCell<String>(
                   columnName: 'status',
-                  value: e.value.payment ? 'Done' : 'Pending'),
+                  value: e.value.status! ? 'Done' : 'Pending'),
             ]))
         .toList();
   }

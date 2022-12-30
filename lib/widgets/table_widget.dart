@@ -27,7 +27,9 @@ class TableWidgetState extends State<TableWidget> {
       headerRowHeight: 35,
       rowHeight: 40,
       onCellTap: (value) {
-        widget.openAppointment(value.rowColumnIndex.rowIndex - 1);
+        if (value.rowColumnIndex.rowIndex != 0) {
+          widget.openAppointment(value.rowColumnIndex.rowIndex - 1);
+        }
       },
       columns: <GridColumn>[
         GridColumn(

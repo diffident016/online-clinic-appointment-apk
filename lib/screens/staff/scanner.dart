@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
@@ -57,6 +56,27 @@ class ScannerState extends State<Scanner> {
     });
   }
 
+  void updateStatus() {
+    try {
+      Services.updateAppointmentStatus(appointment!.id!).then((value) {
+        Navigator.of(context).pop();
+        if (value.statusCode == 200) {
+          ShowInfo.showToast(
+              'Appointment status has been successfully updated.');
+        } else {
+          ShowInfo.showToast('Update failed.');
+        }
+      });
+    } on Exception catch (_) {
+      Navigator.of(context).pop();
+      ShowInfo.showToast("An error occurred, try again later.");
+    }
+
+    setState(() {
+      scanning = false;
+    });
+  }
+
   void getAppointment() {
     final String route = 'filters[app_code]=${result!.code.toString()}';
 
@@ -75,18 +95,30 @@ class ScannerState extends State<Scanner> {
                 action1: 'Okay', btn1: () {
               Navigator.of(context).pop();
             });
+
+            setState(() {
+              scanning = false;
+            });
+
             return null;
           }
 
           appointment = Appointment.fromJson(List.from(parse["data"])[0]);
 
           if (appointment != null) {
-            return showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return qrScanned(appointment!);
-              },
-            );
+            appointment!.status!
+                ? ShowInfo.showSuccessDialog(context,
+                    title: 'Appointment Status',
+                    message: 'This appointment is already marked as done.',
+                    action1: "Okay", btn1: () {
+                    Navigator.of(context).pop();
+                  })
+                : showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return qrScanned(appointment!);
+                    },
+                  );
           }
         } else {
           return ShowInfo.showErrorDialog(context,
@@ -463,6 +495,17 @@ class ScannerState extends State<Scanner> {
         TextButton(
           onPressed: () {
             Navigator.of(context).pop();
+
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return const LoadingDialog(
+                  message: 'Updating status, please wait...',
+                );
+              },
+            );
+
+            updateStatus();
           },
           child: const Text('Yes',
               style: TextStyle(color: textColor, fontWeight: FontWeight.bold)),

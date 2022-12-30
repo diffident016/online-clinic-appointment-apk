@@ -201,4 +201,18 @@ class Services {
       },
     );
   }
+
+  static Future<http.Response> updateAppointmentStatus(int id) async {
+    return await http.put(
+        Uri.parse(
+          "$apiAddress/api/appointments/$id",
+        ),
+        headers: <String, String>{
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          "data": {"status": true}
+        }));
+  }
 }

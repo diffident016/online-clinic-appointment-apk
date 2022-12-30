@@ -30,9 +30,14 @@ class UserAccount extends ChangeNotifier {
   }
 
   static _removeUser() async {
-    await storage.delete(key: 'jwt');
-    await storage.delete(key: 'user');
-    await storage.delete(key: 'patient');
+    try {
+      await storage.delete(key: 'jwt');
+      await storage.delete(key: 'user');
+      await storage.delete(key: 'patient');
+      await storage.delete(key: 'appointment');
+    } on Exception catch (_) {
+      null;
+    }
 
     controller.add(false);
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/screens/auth/login.dart';
+import 'package:online_clinic_appointment/screens/doctor/doctor_home.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_home.dart';
 import 'package:online_clinic_appointment/screens/staff/staff_home.dart';
 
@@ -8,10 +9,10 @@ class UserSelect extends StatefulWidget {
   const UserSelect({Key? key}) : super(key: key);
 
   @override
-  _UserSelectState createState() => _UserSelectState();
+  UserSelectState createState() => UserSelectState();
 }
 
-class _UserSelectState extends State<UserSelect> {
+class UserSelectState extends State<UserSelect> {
   @override
   Widget build(BuildContext context) {
     ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
@@ -31,6 +32,8 @@ class _UserSelectState extends State<UserSelect> {
               final userType = UserAccount.user!.userType;
               if (userType == 'staff') {
                 return const StaffHome();
+              } else if (userType == 'doctor') {
+                return const DoctorHome();
               } else {
                 return const PatientHome();
               }
