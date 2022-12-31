@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
+import 'package:online_clinic_appointment/models/doctor.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
+import 'package:online_clinic_appointment/models/record.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/utils.dart';
 import 'package:http/http.dart' as http;
@@ -191,10 +193,21 @@ class Services {
     );
   }
 
-  static Future<http.Response> getAppoinments(String route) async {
+  static Future<http.Response> getAppointments(String route) async {
     return await http.get(
       Uri.parse(
         "$apiAddress/api/appointments?$route&populate=%2A",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static Future<http.Response> getAllAppointments() async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/appointments?populate=%2A",
       ),
       headers: <String, String>{
         'Authorization': 'Bearer $_token',
@@ -214,5 +227,56 @@ class Services {
         body: json.encode({
           "data": {"status": true}
         }));
+  }
+
+  static Future<http.Response> getRecords(int patientId) async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/records?filters[patient][id]=$patientId&populate[appointment][populate]=schedule&populate[appointment][populate]=patient",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static Future<http.Response> addRecord({required Record record}) async {
+    return await http.post(
+        Uri.parse(
+          "$apiAddress/api/records",
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: json.encode({
+          "data": {
+            "diagnosis": record.diagnosis,
+            "prescription": record.prescription,
+            "note": record.note,
+            "doctor": record.doctor!.id,
+            "patient": record.patient!.id,
+            "appointment": record.appointment.id,
+          }
+        }));
+  }
+
+  static Future<http.Response> getDoctor(int id) async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/doctors?filters[account][id]=$id&populate=account",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static saveDoctor(Doctor doctor) async {
+    try {
+      await _storage.write(key: 'doctor', value: jsonEncode(doctor));
+    } on Exception catch (_) {
+      return null;
+    }
   }
 }

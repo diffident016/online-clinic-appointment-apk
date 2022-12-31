@@ -32,6 +32,7 @@ class _PatientProfileState extends State<PatientProfile> {
   String? gender;
   String? address;
   String? phone;
+  int? age;
 
   @override
   void initState() {
@@ -50,6 +51,7 @@ class _PatientProfileState extends State<PatientProfile> {
           address = widget.patient!.address;
           phone = widget.patient!.contactNumber;
           birthdate = widget.patient!.birthday;
+          age = widget.patient!.age;
         });
       }
     }
@@ -128,6 +130,7 @@ class _PatientProfileState extends State<PatientProfile> {
                         children: [
                           inputLabel('Age'),
                           inputField(
+                              hint: age.toString(),
                               controller: textController[2],
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -224,6 +227,7 @@ class _PatientProfileState extends State<PatientProfile> {
                   if (widget.patient != null) {
                     if (textController[0].text.trim().isEmpty &&
                         textController[1].text.trim().isEmpty &&
+                        textController[2].text.trim().isEmpty &&
                         textController[3].text.trim().isEmpty &&
                         textController[4].text.trim().isEmpty &&
                         widget.patient!.birthday == birthdate) {
@@ -260,7 +264,10 @@ class _PatientProfileState extends State<PatientProfile> {
                       contactNumber: textController[4].text.trim().isEmpty
                           ? phone!
                           : textController[4].text.trim(),
-                      account: UserAccount.user!);
+                      account: UserAccount.user!,
+                      age: textController[2].text.trim().isEmpty
+                          ? age!
+                          : int.parse(textController[2].text));
 
                   showDialog(
                       barrierDismissible: false,

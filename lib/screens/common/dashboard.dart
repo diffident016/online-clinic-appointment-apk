@@ -31,7 +31,7 @@ class DashboardState extends State<Dashboard> {
   late AppointmentDataSource appointmentDataSource;
   bool fetching = true;
 
-  void getAppoinments(List<String> range) async {
+  void getAppointments(List<String> range) async {
     if (!fetching) {
       setState(() {
         fetching = true;
@@ -46,7 +46,7 @@ class DashboardState extends State<Dashboard> {
       if (i < range.length - 1) req += '&';
     }
 
-    Services.getAppoinments(req).then((response) {
+    Services.getAppointments(req).then((response) {
       if (response.statusCode == 200) {
         Map parse = json.decode(response.body);
 
@@ -95,7 +95,7 @@ class DashboardState extends State<Dashboard> {
 
     List<String> dates = [DateFormat("yyyy-MM-dd").format(DateTime.now())];
 
-    getAppoinments(dates);
+    getAppointments(dates);
   }
 
   List<String> today() {
@@ -150,9 +150,9 @@ class DashboardState extends State<Dashboard> {
       onVisibilityChanged: (info) {
         if ((info.visibleFraction * 100) == 100) {
           if (_selectedDay != null) {
-            getAppoinments(getDates(4));
+            getAppointments(getDates(4));
           } else {
-            getAppoinments(getDates(currentIndex));
+            getAppointments(getDates(currentIndex));
           }
         }
       },
@@ -205,15 +205,12 @@ class DashboardState extends State<Dashboard> {
                     onDaySelected: (selectedDay, focusedDay) {
                       FocusScope.of(context).unfocus();
 
-                      List<String> dates = [
-                        DateFormat("yyyy-MM-dd").format(selectedDay)
-                      ];
-                      getAppoinments(dates);
-
                       setState(() {
                         _selectedDay = selectedDay;
                         _focusedDay = focusedDay;
                       });
+
+                      getAppointments(getDates(4));
                     },
                   )),
               Padding(
@@ -226,10 +223,7 @@ class DashboardState extends State<Dashboard> {
                     children: [
                       buildTabs(0, currentIndex, size, label: "Today",
                           onClick: () {
-                        List<String> dates = [
-                          DateFormat("yyyy-MM-dd").format(DateTime.now())
-                        ];
-                        getAppoinments(dates);
+                        getAppointments(getDates(0));
                         setState(() {
                           _selectedDay = null;
                           currentIndex = 0;
@@ -237,12 +231,7 @@ class DashboardState extends State<Dashboard> {
                       }),
                       buildTabs(1, currentIndex, size, label: "Yesterday",
                           onClick: () {
-                        List<String> dates = [
-                          DateFormat("yyyy-MM-dd").format(
-                              DateTime.now().subtract(const Duration(days: 1)))
-                        ];
-
-                        getAppoinments(dates);
+                        getAppointments(getDates(1));
                         setState(() {
                           _selectedDay = null;
                           currentIndex = 1;
@@ -250,17 +239,7 @@ class DashboardState extends State<Dashboard> {
                       }),
                       buildTabs(2, currentIndex, size, label: "This Week",
                           onClick: () {
-                        List<String> dates = [];
-
-                        final DateTime monday =
-                            mostRecentWeekday(DateTime.now(), 1);
-
-                        dates = List.generate(
-                            7,
-                            (i) => DateFormat("yyyy-MM-dd")
-                                .format(monday.add(Duration(days: i))));
-
-                        getAppoinments(dates);
+                        getAppointments(getDates(2));
                         setState(() {
                           _selectedDay = null;
                           currentIndex = 2;
@@ -268,17 +247,7 @@ class DashboardState extends State<Dashboard> {
                       }),
                       buildTabs(3, currentIndex, size, label: "Last Week",
                           onClick: () {
-                        List<String> dates = [];
-
-                        final DateTime monday =
-                            mostRecentWeekday(DateTime.now(), 1);
-
-                        dates = List.generate(
-                            7,
-                            (i) => DateFormat("yyyy-MM-dd").format(
-                                monday.subtract(Duration(days: i + 1))));
-
-                        getAppoinments(dates);
+                        getAppointments(getDates(3));
                         setState(() {
                           _selectedDay = null;
                           currentIndex = 3;

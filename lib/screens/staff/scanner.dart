@@ -83,7 +83,7 @@ class ScannerState extends State<Scanner> {
     appointment = null;
 
     try {
-      Services.getAppoinments(route).then((value) {
+      Services.getAppointments(route).then((value) {
         Navigator.of(context).pop();
         if (value.statusCode == 200) {
           Map parse = json.decode(value.body);

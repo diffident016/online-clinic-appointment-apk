@@ -33,8 +33,15 @@ class UserAccount extends ChangeNotifier {
     try {
       await storage.delete(key: 'jwt');
       await storage.delete(key: 'user');
-      await storage.delete(key: 'patient');
-      await storage.delete(key: 'appointment');
+
+      if (user!.userType == 'patient') {
+        await storage.delete(key: 'patient');
+        await storage.delete(key: 'appointment');
+      }
+
+      if (user!.userType == 'doctor') {
+        await storage.delete(key: 'doctor');
+      }
     } on Exception catch (_) {
       null;
     }
