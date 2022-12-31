@@ -16,6 +16,8 @@ class UserAccount extends ChangeNotifier {
   static User? user;
   static String? token;
 
+  static bool savePassword = false;
+
   static _saveUser(String jwt, Map<String, dynamic> myuser) async {
     try {
       user = User.fromJson(myuser);
@@ -26,6 +28,22 @@ class UserAccount extends ChangeNotifier {
       controller.add(true);
     } on Exception catch (e) {
       debugPrint(e.toString());
+    }
+  }
+
+  static _rememberUser(UserAuth user) async {
+    try {
+      await storage.write(key: 'remember', value: jsonEncode(user));
+    } on Exception catch (_) {
+      null;
+    }
+  }
+
+  static _removeRememberUser() async {
+    try {
+      await storage.delete(key: 'remember');
+    } on Exception catch (_) {
+      null;
     }
   }
 
@@ -127,6 +145,10 @@ class UserAccount extends ChangeNotifier {
         if (response.statusCode == 200) {
           _saveUser(parsed["jwt"], parsed["user"]);
 
+          final userAuth = UserAuth(email, password);
+
+          savePassword ? _rememberUser(userAuth) : _removeRememberUser();
+
           return true;
         } else {
           return parsed["error"]["message"];
@@ -142,4 +164,16 @@ class UserAccount extends ChangeNotifier {
   static Future logout() async {
     return _removeUser();
   }
+}
+
+class UserAuth {
+  final String email;
+  final String password;
+
+  UserAuth(this.email, this.password);
+
+  Map<String, dynamic> toJson() => {'email': email, 'password': password};
+
+  static UserAuth fromJson(Map<String, dynamic> json) =>
+      UserAuth(json['email'], json['password']);
 }
