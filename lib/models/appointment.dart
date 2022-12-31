@@ -11,6 +11,8 @@ class Appointment {
   bool payment;
   String remarks;
   File? media;
+  String? illness;
+  bool? status;
 
   Appointment(
       {required this.app_code,
@@ -19,21 +21,29 @@ class Appointment {
       this.payment = false,
       required this.remarks,
       this.media,
-      this.id});
+      this.id,
+      this.illness,
+      this.status = false});
 
   static Appointment fromJson(Map<String, dynamic> json) => Appointment(
       id: json['id'],
       app_code: json['attributes']['app_code'],
       schedule: Schedule.fromJson(json['attributes']['schedule']['data']),
       patient: Patient.fromJson(json['attributes']['patient']['data']),
-      remarks: json['attributes']['remarks']);
+      payment: json['attributes']['payment'],
+      remarks: json['attributes']['remarks'],
+      illness: json['attributes']['illness'] ?? 'Not specified',
+      status: json['attributes']['status']);
 
   static Appointment fromLocalJson(Map<String, dynamic> json) => Appointment(
       id: json['id'],
       app_code: json['app_code'],
       schedule: Schedule.fromLocalJson(json['schedule']),
       patient: Patient.fromLocalJson(json['patient']),
-      remarks: json['remarks']);
+      payment: json['payment'],
+      remarks: json['remarks'],
+      illness: json['illness'] ?? 'Not specified',
+      status: json['status']);
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -41,6 +51,8 @@ class Appointment {
         'schedule': schedule.toJson(),
         'patient': patient.toJson(),
         'payment': payment,
-        'remarks': remarks
+        'remarks': remarks,
+        'illness': illness,
+        'status': status
       };
 }

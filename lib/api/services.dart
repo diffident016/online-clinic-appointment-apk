@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
+import 'package:online_clinic_appointment/models/doctor.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
+import 'package:online_clinic_appointment/models/record.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/utils.dart';
 import 'package:http/http.dart' as http;
@@ -70,6 +72,19 @@ class Services {
     }
   }
 
+  static Future<http.Response> getPatientProfile() async {
+    final String route = 'filters[account][email]=${UserAccount.user!.email}';
+
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/patients?$route&populate=%2A",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
   static saveAppointment(String id) async {
     Appointment? appointment;
     await getAppointment(id).then((value) {
@@ -79,6 +94,14 @@ class Services {
 
     try {
       await _storage.write(key: 'appointment', value: jsonEncode(appointment!));
+    } on Exception catch (_) {
+      return null;
+    }
+  }
+
+  static saveIllnesses(List<String> illnesses) async {
+    try {
+      await _storage.write(key: 'illnesses', value: jsonEncode(illnesses));
     } on Exception catch (_) {
       return null;
     }
@@ -108,7 +131,7 @@ class Services {
 
   static Future<http.Response> bookAppointment(Appointment appointment) async {
     Schedule? fSchedule;
-    int? imageId;
+    String? image;
 
     await _bookSchedule(appointment.schedule).then((response) {
       Map parse = json.decode(response.body);
@@ -116,10 +139,8 @@ class Services {
       fSchedule = Schedule.fromJson(parse["data"]);
     });
 
-    await uploadImage(appointment.media!).then((response) {
-      Map parse = json.decode(response.body)[0];
-
-      imageId = parse["id"];
+    await convertToBase64(appointment.media!).then((response) {
+      image = response;
     });
 
     return await http.post(
@@ -137,26 +158,17 @@ class Services {
             "patient": appointment.patient.id,
             "payment": appointment.payment,
             "remarks": appointment.remarks,
-            "gcash_payment": imageId
+            "gcash_payment": image,
+            "illness": appointment.illness,
+            "status": appointment.status
           }
         }));
   }
 
-  static Future<http.Response> uploadImage(File imageFile) async {
-    var request =
-        http.MultipartRequest('POST', Uri.parse('$apiAddress/api/upload'));
-    var imagebytes = await imageFile.readAsBytes();
-    List<int> listData = imagebytes.cast();
-    request.files.add(http.MultipartFile.fromBytes('files', listData,
-        filename: imageFile.path.split('image_picker').last,
-        contentType: MediaType.parse('image/jpeg')));
+  static Future convertToBase64(File imageFile) async {
+    List<int> imageBytes = await imageFile.readAsBytes();
 
-    request.headers.addAll({'Authorization': 'Bearer $_token'});
-    var response = await request.send();
-
-    return response.stream
-        .toBytes()
-        .then((value) => http.Response.bytes(value, response.statusCode));
+    return base64Encode(imageBytes);
   }
 
   static Future<http.Response> getSchedules() async {
@@ -168,5 +180,103 @@ class Services {
         'Authorization': 'Bearer $_token',
       },
     );
+  }
+
+  static Future<http.Response> getIllnesses() async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/illnesses",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static Future<http.Response> getAppointments(String route) async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/appointments?$route&populate=%2A",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static Future<http.Response> getAllAppointments() async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/appointments?populate=%2A",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static Future<http.Response> updateAppointmentStatus(int id) async {
+    return await http.put(
+        Uri.parse(
+          "$apiAddress/api/appointments/$id",
+        ),
+        headers: <String, String>{
+          'Authorization': 'Bearer $_token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode({
+          "data": {"status": true}
+        }));
+  }
+
+  static Future<http.Response> getRecords(int patientId) async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/records?filters[patient][id]=$patientId&populate[appointment][populate]=schedule&populate[appointment][populate]=patient",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static Future<http.Response> addRecord({required Record record}) async {
+    return await http.post(
+        Uri.parse(
+          "$apiAddress/api/records",
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: json.encode({
+          "data": {
+            "diagnosis": record.diagnosis,
+            "prescription": record.prescription,
+            "note": record.note,
+            "doctor": record.doctor!.id,
+            "patient": record.patient!.id,
+            "appointment": record.appointment.id,
+          }
+        }));
+  }
+
+  static Future<http.Response> getDoctor(int id) async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/doctors?filters[account][id]=$id&populate=account",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
+  static saveDoctor(Doctor doctor) async {
+    try {
+      await _storage.write(key: 'doctor', value: jsonEncode(doctor));
+    } on Exception catch (_) {
+      return null;
+    }
   }
 }

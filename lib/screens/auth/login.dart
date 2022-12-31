@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/screens/auth/sign_up.dart';
@@ -19,6 +22,30 @@ class LoginState extends State<Login> {
   final _password = TextEditingController();
 
   bool rememberPassword = false;
+
+  late FlutterSecureStorage storage;
+
+  @override
+  void initState() {
+    super.initState();
+
+    storage = const FlutterSecureStorage();
+    getRemember();
+  }
+
+  void getRemember() async {
+    try {
+      final json = await storage.read(key: 'remember');
+
+      if (json != null) {
+        final auth = UserAuth.fromJson(jsonDecode(json));
+        setState(() {
+          _email.text = auth.email;
+          _password.text = auth.password;
+        });
+      }
+    } on Exception catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -137,6 +164,8 @@ class LoginState extends State<Login> {
                                   return const LoadingDialog(
                                       message: 'Logging in, please wait...');
                                 });
+
+                            UserAccount.savePassword = rememberPassword;
                             UserAccount.loginAccount(
                                     email: _email.text.trim(),
                                     password: _password.text.trim())

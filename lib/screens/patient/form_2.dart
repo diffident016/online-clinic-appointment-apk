@@ -18,12 +18,14 @@ class Form2 extends StatefulWidget {
   final Appointment Function() getAppointment;
   final Future Function() finalSchedCheck;
   final VoidCallback checkAvailableSlot;
+  final VoidCallback updateAppointment;
   const Form2(
       {Key? key,
       required this.updateIndex,
       required this.getAppointment,
       required this.finalSchedCheck,
-      required this.checkAvailableSlot})
+      required this.checkAvailableSlot,
+      required this.updateAppointment})
       : super(key: key);
 
   @override
@@ -257,7 +259,10 @@ class Form2State extends State<Form2> {
                         if (value.statusCode == 200) {
                           Map parse = jsonDecode(value.body);
 
-                          Services.saveAppointment(parse["data"]["id"]);
+                          Services.saveAppointment(
+                              parse["data"]["id"].toString());
+
+                          widget.updateAppointment();
                           Navigator.of(context).pop();
                           ShowInfo.showToast("Appointment booking successful");
                         } else {

@@ -60,6 +60,8 @@ class _AppoinmentDetailsState extends State<AppoinmentDetails> {
                   buildLabel("Appointment Time"),
                   buildValue(
                       Utils.displayTime(widget.appointment.schedule.time)),
+                  buildLabel("Illness"),
+                  buildValue(widget.appointment.illness!),
                   buildLabel("Reason for visit"),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8),
