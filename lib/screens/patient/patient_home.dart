@@ -7,7 +7,7 @@ import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
-import 'package:online_clinic_appointment/screens/common/appoinment_details.dart';
+import 'package:online_clinic_appointment/screens/common/appointment_details.dart';
 import 'package:online_clinic_appointment/screens/patient/book_appointment.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_profile.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
