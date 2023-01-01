@@ -45,7 +45,9 @@ class PatientHomeState extends State<PatientHome> {
 
       if (json != null) {
         patient = Patient.fromLocalJson(jsonDecode(json));
-        display = 'Edit';
+        setState(() {
+          display = 'Edit';
+        });
       } else {
         Services.getPatientProfile().then((value) {
           if (value.statusCode == 200) {

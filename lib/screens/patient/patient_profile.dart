@@ -251,7 +251,6 @@ class PatientProfileState extends State<PatientProfile> {
                   }
 
                   final patient = Patient(
-                      id: widget.patient!.id,
                       name: textController[0].text.trim().isEmpty
                           ? name!
                           : textController[0].text.trim(),
