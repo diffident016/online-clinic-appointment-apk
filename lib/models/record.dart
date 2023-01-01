@@ -9,7 +9,7 @@ class Record {
   String? note;
   Doctor? doctor;
   Patient? patient;
-  Appointment appointment;
+  Appointment? appointment;
 
   Record(
       {this.id,
@@ -17,7 +17,7 @@ class Record {
       required this.prescription,
       this.doctor,
       this.patient,
-      required this.appointment,
+      this.appointment,
       this.note});
 
   static Record fromJson(Map<String, dynamic> json) => Record(
@@ -28,4 +28,12 @@ class Record {
       patient: null,
       appointment:
           Appointment.fromJson(json["attributes"]["appointment"]["data"]));
+
+  static Record fromJsonFlex(Map<String, dynamic> json) => Record(
+      id: json["id"],
+      diagnosis: json["attributes"]["diagnosis"],
+      prescription: json["attributes"]["prescription"],
+      doctor: null,
+      patient: null,
+      appointment: null);
 }

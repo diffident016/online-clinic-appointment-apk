@@ -240,6 +240,17 @@ class Services {
     );
   }
 
+  static Future<http.Response> getAllRecords() async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/records",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
   static Future<http.Response> addRecord({required Record record}) async {
     return await http.post(
         Uri.parse(
@@ -256,7 +267,7 @@ class Services {
             "note": record.note,
             "doctor": record.doctor!.id,
             "patient": record.patient!.id,
-            "appointment": record.appointment.id,
+            "appointment": record.appointment!.id,
           }
         }));
   }

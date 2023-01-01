@@ -102,12 +102,10 @@ class PatientHomeState extends State<PatientHome> {
               )
             : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 ListTile(
-                  leading: Container(
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: primaryColor.withOpacity(0.5)),
+                  leading: Icon(
+                    Icons.account_circle_rounded,
+                    color: primaryColor.withOpacity(0.8),
+                    size: 46,
                   ),
                   title: Text(
                     'Hello, $username',
