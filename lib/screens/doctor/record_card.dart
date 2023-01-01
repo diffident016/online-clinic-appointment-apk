@@ -38,6 +38,7 @@ class RecordCardState extends State<RecordCard> {
               )),
           buildField('Date of Visit:',
               Utils.displayDate(widget.record.appointment!.schedule.date)),
+
           const SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
