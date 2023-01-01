@@ -78,60 +78,6 @@ class Form2State extends State<Form2> {
                     const SizedBox(
                       height: 8,
                     ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: Text(
-                              'Name:',
-                              style: TextStyle(
-                                color: textColor.withOpacity(0.8),
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          const WidgetSpan(
-                            child: SizedBox(width: 5),
-                          ),
-                          WidgetSpan(
-                            child: Text(
-                              gCashName,
-                              style: TextStyle(
-                                  color: textColor.withOpacity(0.8),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: Text(
-                              'Gcash No.:',
-                              style: TextStyle(
-                                color: textColor.withOpacity(0.8),
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          const WidgetSpan(
-                            child: SizedBox(width: 5),
-                          ),
-                          WidgetSpan(
-                            child: Text(
-                              gCashPhone,
-                              style: TextStyle(
-                                  color: textColor.withOpacity(0.8),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),
