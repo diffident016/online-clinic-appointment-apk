@@ -183,7 +183,7 @@ class Form2State extends State<Form2> {
 
                 if (pickedImage != null) {
                   ShowInfo.showToast(
-                      "Checking your appoinment schedule, please wait...");
+                      "Checking your appointment schedule, please wait...");
                   widget.finalSchedCheck().then((value) {
                     if (value) {
                       appoinment = widget.getAppointment();
@@ -196,7 +196,7 @@ class Form2State extends State<Form2> {
                           context: context,
                           builder: (_) {
                             return const LoadingDialog(
-                                message: 'Booking appoinment, please wait...');
+                                message: 'Booking appointment, please wait...');
                           });
 
                       Services.bookAppointment(appoinment!).then((value) {
@@ -238,7 +238,8 @@ class Form2State extends State<Form2> {
               onClick: () {
                 ShowInfo.showUpDialog(context,
                     title: "Cancel Appointment",
-                    message: "Are you sure you want to cancel you appointment?",
+                    message:
+                        "Are you sure you want to cancel your appointment?",
                     action1: "Yes",
                     btn1: () {
                       Navigator.of(context).pop();
