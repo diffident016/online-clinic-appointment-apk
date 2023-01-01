@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:collection/collection.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:online_clinic_appointment/api/services.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
@@ -80,60 +78,6 @@ class Form2State extends State<Form2> {
                     const SizedBox(
                       height: 8,
                     ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: Text(
-                              'Name:',
-                              style: TextStyle(
-                                color: textColor.withOpacity(0.8),
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          const WidgetSpan(
-                            child: SizedBox(width: 5),
-                          ),
-                          WidgetSpan(
-                            child: Text(
-                              gCashName,
-                              style: TextStyle(
-                                  color: textColor.withOpacity(0.8),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          WidgetSpan(
-                            child: Text(
-                              'Gcash No.:',
-                              style: TextStyle(
-                                color: textColor.withOpacity(0.8),
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          const WidgetSpan(
-                            child: SizedBox(width: 5),
-                          ),
-                          WidgetSpan(
-                            child: Text(
-                              gCashPhone,
-                              style: TextStyle(
-                                  color: textColor.withOpacity(0.8),
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),
@@ -239,7 +183,7 @@ class Form2State extends State<Form2> {
 
                 if (pickedImage != null) {
                   ShowInfo.showToast(
-                      "Checking your appoinment schedule, please wait...");
+                      "Checking your appointment schedule, please wait...");
                   widget.finalSchedCheck().then((value) {
                     if (value) {
                       appoinment = widget.getAppointment();
@@ -252,7 +196,7 @@ class Form2State extends State<Form2> {
                           context: context,
                           builder: (_) {
                             return const LoadingDialog(
-                                message: 'Booking appoinment, please wait...');
+                                message: 'Booking appointment, please wait...');
                           });
 
                       Services.bookAppointment(appoinment!).then((value) {
@@ -294,7 +238,8 @@ class Form2State extends State<Form2> {
               onClick: () {
                 ShowInfo.showUpDialog(context,
                     title: "Cancel Appointment",
-                    message: "Are you sure you want to cancel you appointment?",
+                    message:
+                        "Are you sure you want to cancel your appointment?",
                     action1: "Yes",
                     btn1: () {
                       Navigator.of(context).pop();

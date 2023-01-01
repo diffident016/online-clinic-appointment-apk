@@ -7,7 +7,7 @@ import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
-import 'package:online_clinic_appointment/screens/common/appoinment_details.dart';
+import 'package:online_clinic_appointment/screens/common/appointment_details.dart';
 import 'package:online_clinic_appointment/screens/patient/book_appointment.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_profile.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
@@ -102,12 +102,10 @@ class PatientHomeState extends State<PatientHome> {
               )
             : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 ListTile(
-                  leading: Container(
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: primaryColor.withOpacity(0.5)),
+                  leading: Icon(
+                    Icons.account_circle_rounded,
+                    color: primaryColor.withOpacity(0.8),
+                    size: 46,
                   ),
                   title: Text(
                     'Hello, $username',

@@ -37,7 +37,8 @@ class RecordCardState extends State<RecordCard> {
                     color: textColor.withOpacity(0.8)),
               )),
           buildField('Date of Visit:',
-              Utils.displayDate(widget.record.appointment.schedule.date)),
+              Utils.displayDate(widget.record.appointment!.schedule.date)),
+
           const SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,

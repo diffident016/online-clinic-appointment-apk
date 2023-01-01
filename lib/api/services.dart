@@ -9,8 +9,6 @@ import 'package:online_clinic_appointment/models/record.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/utils.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:online_clinic_appointment/widgets/showInfo.dart';
 
 import '../models/schedule.dart';
 
@@ -240,6 +238,17 @@ class Services {
     );
   }
 
+  static Future<http.Response> getAllRecords() async {
+    return await http.get(
+      Uri.parse(
+        "$apiAddress/api/records",
+      ),
+      headers: <String, String>{
+        'Authorization': 'Bearer $_token',
+      },
+    );
+  }
+
   static Future<http.Response> addRecord({required Record record}) async {
     return await http.post(
         Uri.parse(
@@ -256,7 +265,7 @@ class Services {
             "note": record.note,
             "doctor": record.doctor!.id,
             "patient": record.patient!.id,
-            "appointment": record.appointment.id,
+            "appointment": record.appointment!.id,
           }
         }));
   }

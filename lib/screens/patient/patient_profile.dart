@@ -12,16 +12,17 @@ import 'package:online_clinic_appointment/widgets/showInfo.dart';
 import '../../widgets/buttons.dart';
 
 class PatientProfile extends StatefulWidget {
-  Patient? patient;
-  VoidCallback getPatientProfile;
-  PatientProfile({Key? key, this.patient, required this.getPatientProfile})
+  final Patient? patient;
+  final VoidCallback getPatientProfile;
+  const PatientProfile(
+      {Key? key, this.patient, required this.getPatientProfile})
       : super(key: key);
 
   @override
-  _PatientProfileState createState() => _PatientProfileState();
+  PatientProfileState createState() => PatientProfileState();
 }
 
-class _PatientProfileState extends State<PatientProfile> {
+class PatientProfileState extends State<PatientProfile> {
   late List<TextEditingController> textController;
 
   final _formKey = GlobalKey<FormState>();

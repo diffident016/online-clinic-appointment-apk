@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
-import 'package:online_clinic_appointment/screens/common/appoinment_details.dart';
+import 'package:online_clinic_appointment/screens/common/appointment_details.dart';
 import 'package:online_clinic_appointment/widgets/table_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:collection/collection.dart';

@@ -60,6 +60,7 @@ class UserAccount extends ChangeNotifier {
       if (user!.userType == 'doctor') {
         await storage.delete(key: 'doctor');
       }
+      user = null;
     } on Exception catch (_) {
       null;
     }

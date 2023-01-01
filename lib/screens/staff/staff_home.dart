@@ -34,11 +34,10 @@ class StaffHomeState extends State<StaffHome> {
         children: [
           ListTile(
             dense: true,
-            leading: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  shape: BoxShape.circle, color: primaryColor.withOpacity(0.5)),
+            leading: Icon(
+              Icons.account_circle_rounded,
+              color: primaryColor.withOpacity(0.8),
+              size: 42,
             ),
             title: const Text(
               'Hello, Staff',
@@ -86,7 +85,7 @@ class StaffHomeState extends State<StaffHome> {
             width: double.infinity,
             child: IndexedStack(
               index: currentIndex,
-              children: [Dashboard(), Statistics(), Scanner()],
+              children: const [Dashboard(), Statistics(), Scanner()],
             ),
           )
         ],

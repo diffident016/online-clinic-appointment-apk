@@ -15,10 +15,6 @@ class UserSelect extends StatefulWidget {
 class UserSelectState extends State<UserSelect> {
   @override
   Widget build(BuildContext context) {
-    ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-      return Center(child: Text("error"));
-    };
-
     return Scaffold(
       body: StreamBuilder(
         stream: UserAccount.currentUser(),

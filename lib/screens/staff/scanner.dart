@@ -44,9 +44,11 @@ class ScannerState extends State<Scanner> {
 
   void pauseScanner() {
     controller!.pauseCamera();
-    setState(() {
-      camera = false;
-    });
+    if (mounted) {
+      setState(() {
+        camera = false;
+      });
+    }
   }
 
   void resumeScanner() {
