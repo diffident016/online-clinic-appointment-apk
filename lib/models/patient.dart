@@ -1,4 +1,5 @@
 import 'package:online_clinic_appointment/models/user.dart';
+import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/utils.dart';
 
 class Patient {
@@ -30,9 +31,7 @@ class Patient {
       birthday: Utils.toDateTime(json['attributes']['birthday']),
       address: json['attributes']['address'],
       contactNumber: json['attributes']['contact_number'],
-      account: json['attributes']['account'] == null
-          ? null
-          : User.fromJson(json['attributes']['account']),
+      account: UserAccount.user,
       status: json['attributes']['status'],
       age: json['attributes']['age']);
 
