@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:collection/collection.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:online_clinic_appointment/api/services.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';

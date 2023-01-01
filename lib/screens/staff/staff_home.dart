@@ -85,7 +85,7 @@ class StaffHomeState extends State<StaffHome> {
             width: double.infinity,
             child: IndexedStack(
               index: currentIndex,
-              children: [Dashboard(), Statistics(), Scanner()],
+              children: const [Dashboard(), Statistics(), Scanner()],
             ),
           )
         ],

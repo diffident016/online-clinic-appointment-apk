@@ -9,8 +9,6 @@ import 'package:online_clinic_appointment/models/record.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/utils.dart';
 import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:online_clinic_appointment/widgets/showInfo.dart';
 
 import '../models/schedule.dart';
 

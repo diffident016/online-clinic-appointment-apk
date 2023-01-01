@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:online_clinic_appointment/models/appointment.dart';
 import 'package:online_clinic_appointment/widgets/appointment_data.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 

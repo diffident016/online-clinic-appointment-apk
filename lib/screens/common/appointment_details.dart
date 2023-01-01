@@ -10,10 +10,10 @@ class AppoinmentDetails extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AppoinmentDetailsState createState() => _AppoinmentDetailsState();
+  AppoinmentDetailsState createState() => AppoinmentDetailsState();
 }
 
-class _AppoinmentDetailsState extends State<AppoinmentDetails> {
+class AppoinmentDetailsState extends State<AppoinmentDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

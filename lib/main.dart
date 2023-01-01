@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         backgroundColor: backgroundColor,
         appBarTheme: appBarTheme,
       ),
-      home: UserSelect(),
+      home: const UserSelect(),
     );
   }
 }
