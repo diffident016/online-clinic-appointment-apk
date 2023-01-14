@@ -11,6 +11,7 @@ class Record {
   Patient? patient;
   Appointment? appointment;
 
+
   Record(
       {this.id,
       required this.diagnosis,
