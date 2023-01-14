@@ -11,21 +11,21 @@ import '../utils.dart';
 
 class UserAccount extends ChangeNotifier {
   static const storage = FlutterSecureStorage();
-  static StreamController<bool?> controller = StreamController<bool?>();
+  static StreamController<int?> controller = StreamController<int?>();
 
   static User? user;
   static String? token;
 
   static bool savePassword = false;
 
-  static _saveUser(String jwt, Map<String, dynamic> myuser) async {
+  static _saveUser(String jwt, Map<String, dynamic> myuser, int type) async {
     try {
       user = User.fromJson(myuser);
       token = jwt;
       await storage.write(key: 'jwt', value: jwt);
       await storage.write(key: 'user', value: jsonEncode(myuser));
 
-      controller.add(true);
+      if (type == 0) controller.add(1);
     } on Exception catch (e) {
       debugPrint(e.toString());
     }
@@ -66,7 +66,7 @@ class UserAccount extends ChangeNotifier {
       null;
     }
 
-    controller.add(false);
+    controller.add(0);
   }
 
   static void _checkUser() async {
@@ -76,21 +76,21 @@ class UserAccount extends ChangeNotifier {
     if (json != null) {
       user = User.fromJson(jsonDecode(json));
     } else {
-      return controller.add(false);
+      return controller.add(0);
     }
 
     if (token == null) {
-      return controller.add(false);
+      return controller.add(0);
     }
 
     if (JwtDecoder.isExpired(token!)) {
       _removeUser();
     } else {
-      controller.add(true);
+      controller.add(1);
     }
   }
 
-  static Stream<bool?> currentUser() {
+  static Stream<int?> currentUser() {
     _checkUser();
     return controller.stream;
   }
@@ -115,7 +115,7 @@ class UserAccount extends ChangeNotifier {
           }).then((response) {
         parsed = json.decode(response.body);
         if (response.statusCode == 200) {
-          _saveUser(parsed["jwt"], parsed["user"]);
+          _saveUser(parsed["jwt"], parsed["user"], 1);
           return true;
         } else {
           return parsed["error"]["message"];
@@ -145,7 +145,7 @@ class UserAccount extends ChangeNotifier {
           }).then((response) {
         parsed = json.decode(response.body);
         if (response.statusCode == 200) {
-          _saveUser(parsed["jwt"], parsed["user"]);
+          _saveUser(parsed["jwt"], parsed["user"], 0);
 
           final userAuth = UserAuth(email, password);
 
@@ -164,6 +164,7 @@ class UserAccount extends ChangeNotifier {
   }
 
   static Future logout() async {
+    controller.add(0);
     return _removeUser();
   }
 }

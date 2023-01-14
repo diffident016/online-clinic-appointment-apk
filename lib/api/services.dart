@@ -8,6 +8,7 @@ import 'package:online_clinic_appointment/models/patient.dart';
 import 'package:online_clinic_appointment/models/record.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/utils.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:http/http.dart' as http;
 
 import '../models/schedule.dart';
@@ -83,7 +84,7 @@ class Services {
     );
   }
 
-  static saveAppointment(String id) async {
+  static Future saveAppointment(String id) async {
     Appointment? appointment;
     await getAppointment(id).then((value) {
       Map parse = json.decode(value.body);
@@ -91,7 +92,8 @@ class Services {
     });
 
     try {
-      await _storage.write(key: 'appointment', value: jsonEncode(appointment!));
+      return await _storage.write(
+          key: 'appointment', value: jsonEncode(appointment!));
     } on Exception catch (_) {
       return null;
     }
@@ -129,7 +131,7 @@ class Services {
 
   static Future<http.Response> bookAppointment(Appointment appointment) async {
     Schedule? fSchedule;
-    String? image;
+    int? image;
 
     await _bookSchedule(appointment.schedule).then((response) {
       Map parse = json.decode(response.body);
@@ -137,7 +139,7 @@ class Services {
       fSchedule = Schedule.fromJson(parse["data"]);
     });
 
-    await convertToBase64(appointment.media!).then((response) {
+    await uploadImage(appointment.media!).then((response) {
       image = response;
     });
 
@@ -167,6 +169,33 @@ class Services {
     List<int> imageBytes = await imageFile.readAsBytes();
 
     return base64Encode(imageBytes);
+  }
+
+  static Future uploadImage(File imageFile) async {
+    var request = http.MultipartRequest(
+        "POST",
+        Uri.parse(
+          "$apiAddress/api/upload",
+        ));
+    var multipartFile = await http.MultipartFile.fromPath(
+        'files', imageFile.path,
+        filename: imageFile.path.split("image_picker").last,
+        contentType: MediaType('image', 'png'));
+
+    request.headers.addAll({
+      'Authorization': 'Bearer $_token',
+    });
+
+    request.files.add(multipartFile);
+
+    var response = await request.send();
+
+    int id = 0;
+    await response.stream.bytesToString().then((value) {
+      id = List.from(jsonDecode(value))[0]["id"];
+    });
+
+    return id;
   }
 
   static Future<http.Response> getSchedules() async {

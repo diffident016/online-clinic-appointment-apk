@@ -198,11 +198,7 @@ class LoginState extends State<Login> {
                               WidgetSpan(
                                 child: GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                const SignUp()));
+                                    UserAccount.controller.add(2);
                                   },
                                   child: const Text(
                                     'SIGN UP',

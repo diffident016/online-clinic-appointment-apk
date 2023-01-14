@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/screens/auth/login.dart';
+import 'package:online_clinic_appointment/screens/auth/sign_up.dart';
 import 'package:online_clinic_appointment/screens/doctor/doctor_home.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_home.dart';
 import 'package:online_clinic_appointment/screens/staff/staff_home.dart';
@@ -24,7 +25,7 @@ class UserSelectState extends State<UserSelect> {
           } else if (data.hasError) {
             return const Login();
           } else if (data.hasData) {
-            if (data.data == true) {
+            if (data.data == 1) {
               final userType = UserAccount.user!.userType;
               if (userType == 'staff') {
                 return const StaffHome();
@@ -33,6 +34,8 @@ class UserSelectState extends State<UserSelect> {
               } else {
                 return const PatientHome();
               }
+            } else if (data.data == 2) {
+              return const SignUp();
             }
             return const Login();
           } else {

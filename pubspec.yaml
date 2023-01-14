@@ -43,10 +43,11 @@ dependencies:
   qr_flutter: ^4.0.0
   image_picker: ^0.8.6
   async: ^2.8.2
-  syncfusion_flutter_datagrid: ^20.4.38
-  syncfusion_flutter_charts: ^20.4.38
+  syncfusion_flutter_datagrid: ^20.4.43
+  syncfusion_flutter_charts: ^20.4.43
   qr_code_scanner: ^1.0.1
   visibility_detector: ^0.3.3
+  chat_bubbles: ^1.4.0
 
 dev_dependencies:
   flutter_test:

@@ -2,14 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:online_clinic_appointment/api/chatbot.dart';
 import 'package:online_clinic_appointment/api/services.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
+import 'package:online_clinic_appointment/models/message.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/screens/common/appointment_details.dart';
 import 'package:online_clinic_appointment/screens/patient/book_appointment.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_profile.dart';
+import 'package:online_clinic_appointment/widgets/chat_box.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
 
 class PatientHome extends StatefulWidget {
@@ -28,6 +31,8 @@ class PatientHomeState extends State<PatientHome> {
   late FlutterSecureStorage storage;
 
   String display = 'Setup';
+
+  List<Message> messages = [];
 
   @override
   void initState() {
@@ -72,7 +77,9 @@ class PatientHomeState extends State<PatientHome> {
     final json = await storage.read(key: 'appointment');
 
     if (json != null) {
-      appointment = Appointment.fromLocalJson(jsonDecode(json));
+      setState(() {
+        appointment = Appointment.fromLocalJson(jsonDecode(json));
+      });
     }
 
     if (mounted) {
@@ -250,27 +257,44 @@ class PatientHomeState extends State<PatientHome> {
                     ),
                   ),
                 ),
-                // Padding(
-                //   padding:
-                //       const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                //   child: Container(
-                //     decoration: BoxDecoration(
-                //         border: Border.all(color: textColor.withOpacity(0.1)),
-                //         borderRadius: BorderRadius.circular(15)),
-                //     child: ListTile(
-                //       title: Text(
-                //         "Check doctor's diagnostics",
-                //         style: TextStyle(
-                //             color: textColor.withOpacity(0.6), fontSize: 14),
-                //       ),
-                //       trailing: Icon(
-                //         Icons.chevron_right,
-                //         color: textColor.withOpacity(0.6),
-                //       ),
-                //     ),
-                //   ),
-                // )
               ]),
+        floatingActionButton: GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              isDismissible: false,
+              isScrollControlled: true,
+              backgroundColor: Colors.transparent,
+              builder: (context) => Padding(
+                padding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(15.0),
+                      topRight: Radius.circular(15.0),
+                    ),
+                  ),
+                  child: ChatBox(
+                      saveMessages: (List<Message> messages) {
+                        this.messages = messages;
+                      },
+                      messages: messages),
+                ),
+              ),
+            );
+          },
+          child: Container(
+            width: 56,
+            height: 80,
+            alignment: Alignment.center,
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle, color: primaryColor),
+            child: Icon(
+                size: 38, Icons.contact_support_rounded, color: Colors.white),
+          ),
+        ),
       ),
     );
   }

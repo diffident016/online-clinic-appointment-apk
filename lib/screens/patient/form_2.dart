@@ -204,11 +204,13 @@ class Form2State extends State<Form2> {
                           Map parse = jsonDecode(value.body);
 
                           Services.saveAppointment(
-                              parse["data"]["id"].toString());
-
-                          widget.updateAppointment();
-                          Navigator.of(context).pop();
-                          ShowInfo.showToast("Appointment booking successful");
+                                  parse["data"]["id"].toString())
+                              .whenComplete(() {
+                            widget.updateAppointment();
+                            Navigator.of(context).pop();
+                            ShowInfo.showToast(
+                                "Appointment booking successful");
+                          });
                         } else {
                           Navigator.of(context).pop();
                           ShowInfo.showToast("Appointment booking failed");

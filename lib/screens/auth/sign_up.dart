@@ -37,10 +37,8 @@ class SignUpState extends State<SignUp> {
                         message:
                             'Account has been registered successfully, you will be logged in automatically.',
                         action1: 'Okay', btn1: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => const UserSelect())));
+                      Navigator.of(context).pop();
+                      UserAccount.controller.add(1);
                     })
                   }
                 else
@@ -182,11 +180,7 @@ class SignUpState extends State<SignUp> {
                                 WidgetSpan(
                                   child: GestureDetector(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  const Login()));
+                                      UserAccount.controller.add(0);
                                     },
                                     child: const Text('LOGIN',
                                         style: TextStyle(
