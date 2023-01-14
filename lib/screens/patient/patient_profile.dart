@@ -131,7 +131,7 @@ class PatientProfileState extends State<PatientProfile> {
                         children: [
                           inputLabel('Age'),
                           inputField(
-                              hint: age.toString(),
+                              hint: age == null ? null : age.toString(),
                               controller: textController[2],
                               validator: (value) {
                                 if (value!.isEmpty) {
