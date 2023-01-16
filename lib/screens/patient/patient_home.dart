@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:online_clinic_appointment/api/chatbot.dart';
 import 'package:online_clinic_appointment/api/services.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
@@ -11,6 +10,7 @@ import 'package:online_clinic_appointment/models/patient.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/screens/common/appointment_details.dart';
 import 'package:online_clinic_appointment/screens/patient/book_appointment.dart';
+import 'package:online_clinic_appointment/screens/patient/patient_appointments.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_profile.dart';
 import 'package:online_clinic_appointment/widgets/chat_box.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
@@ -226,18 +226,17 @@ class PatientHomeState extends State<PatientHome> {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
                   child: GestureDetector(
                     onTap: () {
-                      if (appointment == null) {
+                      if (patient == null) {
                         ShowInfo.showToast(
-                            "You don't have any appointment yet.");
+                            "You need to setup your patient profile first.");
                         return;
                       }
 
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: ((context) => AppoinmentDetails(
-                                    appointment: appointment!,
-                                  ))));
+                              builder: ((context) =>
+                                  PatientAppointments(patient: patient!))));
                     },
                     child: Container(
                       decoration: BoxDecoration(
@@ -245,7 +244,7 @@ class PatientHomeState extends State<PatientHome> {
                           borderRadius: BorderRadius.circular(15)),
                       child: ListTile(
                         title: Text(
-                          'Appointment details',
+                          'Your appointments',
                           style: TextStyle(
                               color: textColor.withOpacity(0.6), fontSize: 14),
                         ),

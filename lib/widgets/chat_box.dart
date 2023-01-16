@@ -64,6 +64,7 @@ class _ChatBoxState extends State<ChatBox> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -100,7 +101,7 @@ class _ChatBoxState extends State<ChatBox> {
           ),
         ),
         SizedBox(
-            height: 260,
+            height: size.height * 0.18,
             child: messages.isEmpty
                 ? const Center(
                     child: Text('Hey! Say hi or ask me a question.'),
