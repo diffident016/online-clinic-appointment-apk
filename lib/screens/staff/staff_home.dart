@@ -30,65 +30,68 @@ class StaffHomeState extends State<StaffHome> {
                 fontWeight: FontWeight.w500,
                 fontSize: 24),
           )),
-      body: Column(
-        children: [
-          ListTile(
-            dense: true,
-            leading: Icon(
-              Icons.account_circle_rounded,
-              color: primaryColor.withOpacity(0.8),
-              size: 42,
-            ),
-            title: const Text(
-              'Hello, Staff',
-              style: TextStyle(color: textColor, fontSize: 16),
-            ),
-            trailing: GestureDetector(
-              onTap: () {
-                UserAccount.logout();
-              },
-              child: Icon(
-                Icons.logout,
-                color: textColor.withOpacity(0.6),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            ListTile(
+              dense: true,
+              leading: Icon(
+                Icons.account_circle_rounded,
+                color: primaryColor.withOpacity(0.8),
+                size: 42,
+              ),
+              title: const Text(
+                'Hello, Staff',
+                style: TextStyle(color: textColor, fontSize: 16),
+              ),
+              trailing: GestureDetector(
+                onTap: () {
+                  UserAccount.logout();
+                },
+                child: Icon(
+                  Icons.logout,
+                  color: textColor.withOpacity(0.6),
+                ),
               ),
             ),
-          ),
-          Container(
-            height: 50,
-            decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: borderColor))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildTabs(0, currentIndex, size, label: "DASHBOARD",
-                    onClick: () {
-                  setState(() {
-                    currentIndex = 0;
-                  });
-                }),
-                buildTabs(1, currentIndex, size, label: "STATISTICS",
-                    onClick: () {
-                  setState(() {
-                    currentIndex = 1;
-                  });
-                }),
-                buildTabs(2, currentIndex, size, label: "SCANNER", onClick: () {
-                  setState(() {
-                    currentIndex = 2;
-                  });
-                }),
-              ],
+            Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: borderColor))),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  buildTabs(0, currentIndex, size, label: "DASHBOARD",
+                      onClick: () {
+                    setState(() {
+                      currentIndex = 0;
+                    });
+                  }),
+                  buildTabs(1, currentIndex, size, label: "STATISTICS",
+                      onClick: () {
+                    setState(() {
+                      currentIndex = 1;
+                    });
+                  }),
+                  buildTabs(2, currentIndex, size, label: "SCANNER",
+                      onClick: () {
+                    setState(() {
+                      currentIndex = 2;
+                    });
+                  }),
+                ],
+              ),
             ),
-          ),
-          SizedBox(
-            height: size.height - (size.height * 0.23),
-            width: double.infinity,
-            child: IndexedStack(
-              index: currentIndex,
-              children: const [Dashboard(), Statistics(), Scanner()],
-            ),
-          )
-        ],
+            SizedBox(
+              height: size.height - (size.height * 0.23),
+              width: double.infinity,
+              child: IndexedStack(
+                index: currentIndex,
+                children: const [Dashboard(), Statistics(), Scanner()],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
