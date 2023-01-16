@@ -111,7 +111,7 @@ class ScannerState extends State<Scanner> {
             appointment!.status!
                 ? ShowInfo.showSuccessDialog(context,
                     title: 'Appointment Status',
-                    message: 'This appointment is already marked as done.',
+                    message: 'This appointment was already marked as done.',
                     action1: "Okay", btn1: () {
                     Navigator.of(context).pop();
                   })
@@ -361,7 +361,7 @@ class ScannerState extends State<Scanner> {
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('no Permission')),
+        const SnackBar(content: Text('No Permission')),
       );
     }
   }

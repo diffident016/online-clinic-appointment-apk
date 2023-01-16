@@ -131,7 +131,7 @@ class PatientProfileState extends State<PatientProfile> {
                         children: [
                           inputLabel('Age'),
                           inputField(
-                              hint: age.toString(),
+                              hint: age == null ? null : age.toString(),
                               controller: textController[2],
                               validator: (value) {
                                 if (value!.isEmpty) {
@@ -251,7 +251,6 @@ class PatientProfileState extends State<PatientProfile> {
                   }
 
                   final patient = Patient(
-                      id: widget.patient!.id,
                       name: textController[0].text.trim().isEmpty
                           ? name!
                           : textController[0].text.trim(),
@@ -290,7 +289,7 @@ class PatientProfileState extends State<PatientProfile> {
                           Patient tpatient = Patient.fromJson(parsed["data"]);
                           tpatient.account = UserAccount.user!;
                           Services.savePatientProfile(tpatient);
-                          ShowInfo.showToast('Your profile has been save');
+                          ShowInfo.showToast('Your profile has been saved');
                           widget.getPatientProfile();
                           Navigator.of(context).pop();
                         } else {

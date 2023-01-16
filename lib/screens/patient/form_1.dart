@@ -71,7 +71,7 @@ class Form1State extends State<Form1> {
 
   void getFromStorage() async {
     try {
-      final json = await storage.read(key: 'patient');
+      final json = await storage.read(key: 'illnesses');
 
       if (json != null) {
         items = List.from(jsonDecode(json));
@@ -135,8 +135,6 @@ class Form1State extends State<Form1> {
             fetching = false;
           });
         } else {
-          ShowInfo.showToast("Something went wrong");
-
           setState(() {
             fetching = false;
           });
@@ -145,6 +143,7 @@ class Form1State extends State<Form1> {
         }
       });
     } on Exception catch (_) {
+      ShowInfo.showToast("Something went wrong");
       return getFromStorage();
     }
   }

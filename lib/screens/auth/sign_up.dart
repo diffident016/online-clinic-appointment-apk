@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/screens/auth/login.dart';
+import 'package:online_clinic_appointment/user_select.dart';
 import 'package:online_clinic_appointment/widgets/buttons.dart';
 import 'package:online_clinic_appointment/widgets/loading_dialog.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
@@ -34,9 +35,11 @@ class SignUpState extends State<SignUp> {
                     ShowInfo.showUpDialog(context,
                         title: 'Sign-Up Successful',
                         message:
-                            'Account has been registered successfully, you will logged in automatically.',
-                        action1: 'Okay',
-                        btn1: () {})
+                            'Account has been registered successfully, you will be logged in automatically.',
+                        action1: 'Okay', btn1: () {
+                      Navigator.of(context).pop();
+                      UserAccount.controller.add(1);
+                    })
                   }
                 else
                   {ShowInfo.showToast(response)}
@@ -177,11 +180,7 @@ class SignUpState extends State<SignUp> {
                                 WidgetSpan(
                                   child: GestureDetector(
                                     onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  const Login()));
+                                      UserAccount.controller.add(0);
                                     },
                                     child: const Text('LOGIN',
                                         style: TextStyle(

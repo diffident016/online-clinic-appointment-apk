@@ -95,7 +95,7 @@ class BookAppointmentState extends State<BookAppointment> {
       });
     }
 
-    if (schedules!.isEmpty) {
+    if (schedules == null) {
       setState(() {
         available = List.generate(schedTime.length, (i) => true);
       });

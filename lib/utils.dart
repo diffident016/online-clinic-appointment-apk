@@ -32,4 +32,7 @@ class Utils {
   }
 }
 
-const String apiAddress = 'http://192.168.8.100:1337';
+const String apiAddress =
+    'https://online-clinic-appointment-production.up.railway.app';
+const String hostAddress =
+    'https://online-clinic-appointment-chatbot.onrender.com';
