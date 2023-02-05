@@ -143,6 +143,7 @@ class UserAccount extends ChangeNotifier {
             'password': password,
           }).then((response) {
         parsed = json.decode(response.body);
+
         if (response.statusCode == 200) {
           _saveUser(parsed["jwt"], parsed["user"], 0);
 
@@ -163,8 +164,9 @@ class UserAccount extends ChangeNotifier {
   }
 
   static Future logout() async {
+    _removeUser();
     controller.add(0);
-    return _removeUser();
+    return;
   }
 }
 

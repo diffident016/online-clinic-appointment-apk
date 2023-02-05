@@ -35,10 +35,10 @@ class SignUpState extends State<SignUp> {
                     ShowInfo.showUpDialog(context,
                         title: 'Sign-Up Successful',
                         message:
-                            'Account has been registered successfully, you will be logged in automatically.',
-                        action1: 'Okay', btn1: () {
+                            'Account has been registered successfully, please login your account.',
+                        action1: 'Login', btn1: () {
                       Navigator.of(context).pop();
-                      UserAccount.controller.add(1);
+                      UserAccount.logout();
                     })
                   }
                 else

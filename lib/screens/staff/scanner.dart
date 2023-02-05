@@ -444,7 +444,7 @@ class ScannerState extends State<Scanner> {
                   ),
                   WidgetSpan(
                     child: Text(
-                      appointment.patient.name,
+                      '${appointment.patient.firstname}, ${appointment.patient.lastname}, ${appointment.patient.midname}',
                       style: TextStyle(
                           color: textColor.withOpacity(0.8),
                           fontSize: 13,

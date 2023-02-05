@@ -4,7 +4,9 @@ import 'package:online_clinic_appointment/utils.dart';
 
 class Patient {
   int? id;
-  String name;
+  String firstname;
+  String lastname;
+  String midname;
   String gender;
   int? age;
   DateTime birthday;
@@ -15,7 +17,9 @@ class Patient {
 
   Patient(
       {this.id,
-      required this.name,
+      required this.firstname,
+      required this.lastname,
+      required this.midname,
       required this.gender,
       required this.birthday,
       required this.address,
@@ -26,7 +30,9 @@ class Patient {
 
   static Patient fromJson(Map<String, dynamic> json) => Patient(
       id: json['id'],
-      name: json['attributes']['name'],
+      firstname: json['attributes']['firstname'],
+      lastname: json['attributes']['lastname'],
+      midname: json['attributes']['middlename'],
       gender: json['attributes']['gender'],
       birthday: Utils.toDateTime(json['attributes']['birthday']),
       address: json['attributes']['address'],
@@ -37,7 +43,9 @@ class Patient {
 
   static Patient fromNestedJson(Map<String, dynamic> json) => Patient(
       id: json['data']['id'],
-      name: json['data']['attributes']['name'],
+      firstname: json['data']['attributes']['firstname'],
+      lastname: json['data']['attributes']['lastname'],
+      midname: json['data']['attributes']['middlename'],
       gender: json['data']['attributes']['gender'],
       birthday: Utils.toDateTime(json['data']['attributes']['birthday']),
       address: json['data']['attributes']['address'],
@@ -50,7 +58,9 @@ class Patient {
 
   static Patient fromLocalJson(Map<String, dynamic> json) => Patient(
       id: json['id'],
-      name: json['name'],
+      firstname: json['firstname'],
+      lastname: json['lastname'],
+      midname: json['middlename'],
       gender: json['gender'],
       birthday: Utils.toDateTime(json['birthday']),
       address: json['address'],
@@ -61,7 +71,9 @@ class Patient {
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
+        'firstname': firstname,
+        'lastname': lastname,
+        'middlename': midname,
         'gender': gender,
         'birthday': Utils.fromDateTimeToJson(birthday),
         'address': address,

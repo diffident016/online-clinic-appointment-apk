@@ -51,20 +51,22 @@ class PatientHomeState extends State<PatientHome> {
       if (json != null) {
         patient = Patient.fromLocalJson(jsonDecode(json));
         setState(() {
-          display = 'Edit';
+          display = 'Update';
         });
       } else {
         Services.getPatientProfile().then((value) {
           if (value.statusCode == 200) {
             Map parse = jsonDecode(value.body);
 
-            patient = Patient.fromJson(List.from(parse["data"])[0]);
+            if (List.from(parse["data"]).isNotEmpty) {
+              patient = Patient.fromJson(List.from(parse["data"])[0]);
 
-            setState(() {
-              display = 'Edit';
-            });
+              setState(() {
+                display = 'Update';
+              });
 
-            Services.savePatientProfile(patient!);
+              Services.savePatientProfile(patient!);
+            }
           }
         });
       }
@@ -117,7 +119,7 @@ class PatientHomeState extends State<PatientHome> {
                     size: 46,
                   ),
                   title: Text(
-                    'Hello, $username',
+                    'Hello, ${patient == null ? 'Patient' : patient!.firstname}',
                     style: const TextStyle(color: textColor),
                   ),
                   trailing: GestureDetector(

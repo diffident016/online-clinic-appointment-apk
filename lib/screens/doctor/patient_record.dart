@@ -43,7 +43,9 @@ class PatientRecordState extends State<PatientRecord> {
 
   void searchPatients(String query) {
     final suggestions = appointments.where((app) {
-      final patientname = app.patient.name.toLowerCase();
+      final patientname =
+          '${app.patient.lastname}, ${app.patient.firstname}, ${app.patient.midname}'
+              .toLowerCase();
       final input = query.toLowerCase();
 
       return patientname.contains(input);
@@ -114,7 +116,7 @@ class PatientRecordState extends State<PatientRecord> {
           }
 
           final newGroup =
-              groupBy(appointments, ((Appointment ap) => ap.patient.name))
+              groupBy(appointments, ((Appointment ap) => ap.patient.id))
                   .entries
                   .toList();
 

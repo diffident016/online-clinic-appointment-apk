@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
-import 'package:online_clinic_appointment/screens/auth/sign_up.dart';
 import 'package:online_clinic_appointment/widgets/buttons.dart';
 import 'package:online_clinic_appointment/widgets/loading_dialog.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
