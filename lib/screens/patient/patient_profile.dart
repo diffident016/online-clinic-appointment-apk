@@ -56,14 +56,14 @@ class PatientProfileState extends State<PatientProfile> {
     if (widget.patient != null) {
       if (mounted) {
         setState(() {
-          firstname = widget.patient!.firstname;
-          lastname = widget.patient!.lastname;
-          midname = widget.patient!.midname;
-          gender = widget.patient!.gender;
-          address = widget.patient!.address;
-          phone = widget.patient!.contactNumber;
+          textController[0].text = widget.patient!.firstname;
+          textController[1].text = widget.patient!.lastname;
+          textController[2].text = widget.patient!.midname;
+          textController[3].text = widget.patient!.gender;
+          textController[5].text = widget.patient!.address;
+          textController[6].text = widget.patient!.contactNumber;
           birthdate = widget.patient!.birthday;
-          age = widget.patient!.age;
+          textController[4].text = widget.patient!.age.toString();
         });
       }
     }
@@ -121,7 +121,8 @@ class PatientProfileState extends State<PatientProfile> {
                       return ("First name is required");
                     }
 
-                    if (RegExp(specialChar).hasMatch(value)) {
+                    if (RegExp(r'[!@#$%^&*(),.?":{}|<>0-9+-=;_\^/]')
+                        .hasMatch(value)) {
                       return ("Special characters is not allowed.");
                     }
 
@@ -137,7 +138,8 @@ class PatientProfileState extends State<PatientProfile> {
                       return ("Last name is required");
                     }
 
-                    if (RegExp(specialChar).hasMatch(value)) {
+                    if (RegExp(r'[!@#$%^&*(),.?":{}|<>0-9+-=;_\^/]')
+                        .hasMatch(value)) {
                       return ("Special characters is not allowed.");
                     }
 
@@ -153,7 +155,8 @@ class PatientProfileState extends State<PatientProfile> {
                       return ("Middle name is required");
                     }
 
-                    if (RegExp(specialChar).hasMatch(value)) {
+                    if (RegExp(r'[!@#$%^&*(),.?":{}|<>0-9+-=;_\^/]')
+                        .hasMatch(value)) {
                       return ("Special characters is not allowed.");
                     }
 
@@ -276,17 +279,21 @@ class PatientProfileState extends State<PatientProfile> {
                   FocusScope.of(context).unfocus();
 
                   if (widget.patient != null) {
-                    if (textController[0].text.trim().isEmpty &&
-                        textController[1].text.trim().isEmpty &&
-                        textController[2].text.trim().isEmpty &&
-                        textController[3].text.trim().isEmpty &&
-                        textController[4].text.trim().isEmpty &&
-                        textController[5].text.trim().isEmpty &&
-                        textController[6].text.trim().isEmpty &&
+                    if (textController[0].text == widget.patient!.firstname &&
+                        textController[1].text == widget.patient!.lastname &&
+                        textController[2].text == widget.patient!.midname &&
+                        textController[3].text == widget.patient!.gender &&
+                        textController[4].text ==
+                            widget.patient!.age.toString() &&
+                        textController[5].text == widget.patient!.address &&
+                        textController[6].text ==
+                            widget.patient!.contactNumber &&
                         widget.patient!.birthday == birthdate) {
                       return;
                     }
-                  } else if (_formKey.currentState!.validate()) {
+                  }
+
+                  if (_formKey.currentState!.validate()) {
                     if (birthdate == null) {
                       ShowInfo.showUpDialog(context,
                           title: "Required Info",
