@@ -388,7 +388,7 @@ class Form1State extends State<Form1> {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'YOUR ILLNESS',
+                  'YOUR HEALTH COMPLAINT',
                   style: TextStyle(
                       color: primaryColor.withOpacity(0.8),
                       fontWeight: FontWeight.w500),
@@ -408,7 +408,7 @@ class Form1State extends State<Form1> {
                         value: _selectedIllness,
                         menuMaxHeight: 300,
                         items: dropdownItems,
-                        hint: Text('Select Illness',
+                        hint: Text('Select Health Complaint',
                             style: TextStyle(
                               color: textColor.withOpacity(0.8),
                             )),
@@ -430,7 +430,7 @@ class Form1State extends State<Form1> {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'REASON FOR VISIT',
+                  'SPECIFIC COMPLAINT/CONCERN',
                   style: TextStyle(
                       color: primaryColor.withOpacity(0.8),
                       fontWeight: FontWeight.w500),

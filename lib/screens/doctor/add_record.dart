@@ -200,6 +200,7 @@ class AddRecordState extends State<AddRecord> {
                         final record = Record(
                             diagnosis: _diagnosis.text,
                             prescription: _prescription.text,
+                            recordDate: DateTime.now(),
                             note: "No note",
                             appointment: appointment!,
                             patient: widget.patient,

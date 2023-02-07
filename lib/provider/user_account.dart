@@ -168,6 +168,25 @@ class UserAccount extends ChangeNotifier {
     controller.add(0);
     return;
   }
+
+  static Future<http.Response> updatePassword(
+      {required String currentPassword,
+      required String newPassword,
+      required String confirmPass}) async {
+    return await http.post(
+        Uri.parse(
+          "$apiAddress/api/auth/change-password",
+        ),
+        headers: <String, String>{
+          'Context-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: {
+          'currentPassword': currentPassword,
+          'password': newPassword,
+          'passwordConfirmation': confirmPass
+        });
+  }
 }
 
 class UserAuth {

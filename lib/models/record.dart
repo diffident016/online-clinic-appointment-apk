@@ -1,6 +1,7 @@
 import 'package:online_clinic_appointment/models/appointment.dart';
 import 'package:online_clinic_appointment/models/doctor.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
+import 'package:online_clinic_appointment/utils.dart';
 
 class Record {
   int? id;
@@ -10,12 +11,13 @@ class Record {
   Doctor? doctor;
   Patient? patient;
   Appointment? appointment;
-
+  DateTime recordDate;
 
   Record(
       {this.id,
       required this.diagnosis,
       required this.prescription,
+      required this.recordDate,
       this.doctor,
       this.patient,
       this.appointment,
@@ -25,6 +27,7 @@ class Record {
       id: json["id"],
       diagnosis: json["attributes"]["diagnosis"],
       prescription: json["attributes"]["prescription"],
+      recordDate: Utils.toDateTime(json["attributes"]["record_date"]),
       doctor: null,
       patient: null,
       appointment:
@@ -34,6 +37,7 @@ class Record {
       id: json["id"],
       diagnosis: json["attributes"]["diagnosis"],
       prescription: json["attributes"]["prescription"],
+      recordDate: Utils.toDateTime(json["attributes"]["record_date"]),
       doctor: null,
       patient: null,
       appointment: null);

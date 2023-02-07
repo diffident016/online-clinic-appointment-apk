@@ -9,6 +9,7 @@ import 'package:online_clinic_appointment/models/message.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/screens/common/appointment_details.dart';
+import 'package:online_clinic_appointment/screens/common/change_password.dart';
 import 'package:online_clinic_appointment/screens/patient/book_appointment.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_appointments.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_profile.dart';
@@ -113,10 +114,31 @@ class PatientHomeState extends State<PatientHome> {
               )
             : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 ListTile(
-                  leading: Icon(
-                    Icons.account_circle_rounded,
-                    color: primaryColor.withOpacity(0.8),
-                    size: 46,
+                  leading: PopupMenuButton(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    onSelected: (value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => const ChangePassword())));
+                    },
+                    padding: const EdgeInsets.all(0),
+                    position: PopupMenuPosition.under,
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 1,
+                        child: Text('Update Password'),
+                      )
+                    ],
+                    icon: Icon(
+                      Icons.account_circle_rounded,
+                      color: primaryColor.withOpacity(0.8),
+                      size: 46,
+                    ),
                   ),
                   title: Text(
                     'Hello, ${patient == null ? 'Patient' : patient!.firstname}',
