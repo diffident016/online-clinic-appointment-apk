@@ -229,9 +229,21 @@ class Form1State extends State<Form1> {
                         setState(() {
                           final day = DateFormat("EEE").format(selectedDay);
 
+                          final now = DateFormat("yyyy-MM-dd").parse(
+                              DateFormat("yyyy-MM-dd").format(DateTime.now()));
+                          final sel = DateFormat("yyyy-MM-dd").parse(
+                              DateFormat("yyyy-MM-dd").format(selectedDay));
+
                           if (notAllowedDay.contains(day)) {
                             ShowInfo.showToast(
                                 'We are closed during this day.');
+
+                            return;
+                          }
+
+                          if (sel.isBefore(now) ||
+                              sel.isAfter(now.add(const Duration(days: 21)))) {
+                            ShowInfo.showToast('This day is not allowed.');
 
                             return;
                           }

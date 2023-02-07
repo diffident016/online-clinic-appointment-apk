@@ -4,7 +4,6 @@ import 'package:online_clinic_appointment/utils.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class AppointmentDataSource extends DataGridSource {
-  /// Creates the employee data source class with required details.
   AppointmentDataSource({required List<Appointment> appoinments}) {
     _appointmentData = appoinments
         .asMap()
