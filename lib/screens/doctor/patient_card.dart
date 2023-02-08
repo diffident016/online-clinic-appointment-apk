@@ -21,7 +21,7 @@ class PatientCard extends StatelessWidget {
           size: 42,
         ),
         title: Text(
-          appointment.patient.name,
+          '${appointment.patient.lastname}, ${appointment.patient.firstname}',
           style: const TextStyle(color: textColor, fontSize: 14),
         ),
         subtitle: Text(

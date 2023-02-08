@@ -5,6 +5,8 @@ import 'package:online_clinic_appointment/screens/common/dashboard.dart';
 import 'package:online_clinic_appointment/screens/staff/statistics.dart';
 import 'package:online_clinic_appointment/screens/staff/scanner.dart';
 
+import '../common/change_password.dart';
+
 class StaffHome extends StatefulWidget {
   const StaffHome({Key? key}) : super(key: key);
 
@@ -35,10 +37,31 @@ class StaffHomeState extends State<StaffHome> {
           children: [
             ListTile(
               dense: true,
-              leading: Icon(
-                Icons.account_circle_rounded,
-                color: primaryColor.withOpacity(0.8),
-                size: 42,
+              leading: PopupMenuButton(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                onSelected: (value) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => const ChangePassword())));
+                },
+                padding: const EdgeInsets.all(0),
+                position: PopupMenuPosition.under,
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 1,
+                    child: Text('Update Password'),
+                  )
+                ],
+                icon: Icon(
+                  Icons.account_circle_rounded,
+                  color: primaryColor.withOpacity(0.8),
+                  size: 46,
+                ),
               ),
               title: const Text(
                 'Hello, Staff',

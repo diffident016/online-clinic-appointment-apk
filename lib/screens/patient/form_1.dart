@@ -229,9 +229,21 @@ class Form1State extends State<Form1> {
                         setState(() {
                           final day = DateFormat("EEE").format(selectedDay);
 
+                          final now = DateFormat("yyyy-MM-dd").parse(
+                              DateFormat("yyyy-MM-dd").format(DateTime.now()));
+                          final sel = DateFormat("yyyy-MM-dd").parse(
+                              DateFormat("yyyy-MM-dd").format(selectedDay));
+
                           if (notAllowedDay.contains(day)) {
                             ShowInfo.showToast(
                                 'We are closed during this day.');
+
+                            return;
+                          }
+
+                          if (sel.isBefore(now) ||
+                              sel.isAfter(now.add(const Duration(days: 21)))) {
+                            ShowInfo.showToast('This day is not allowed.');
 
                             return;
                           }
@@ -376,7 +388,7 @@ class Form1State extends State<Form1> {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'YOUR ILLNESS',
+                  'YOUR HEALTH COMPLAINT',
                   style: TextStyle(
                       color: primaryColor.withOpacity(0.8),
                       fontWeight: FontWeight.w500),
@@ -396,7 +408,7 @@ class Form1State extends State<Form1> {
                         value: _selectedIllness,
                         menuMaxHeight: 300,
                         items: dropdownItems,
-                        hint: Text('Select Illness',
+                        hint: Text('Select Health Complaint',
                             style: TextStyle(
                               color: textColor.withOpacity(0.8),
                             )),
@@ -418,7 +430,7 @@ class Form1State extends State<Form1> {
                 ),
                 const SizedBox(height: 5),
                 Text(
-                  'REASON FOR VISIT',
+                  'SPECIFIC COMPLAINT/CONCERN',
                   style: TextStyle(
                       color: primaryColor.withOpacity(0.8),
                       fontWeight: FontWeight.w500),

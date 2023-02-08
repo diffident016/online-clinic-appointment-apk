@@ -6,6 +6,7 @@ import 'package:online_clinic_appointment/api/services.dart';
 import 'package:online_clinic_appointment/constant.dart';
 import 'package:online_clinic_appointment/models/doctor.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
+import 'package:online_clinic_appointment/screens/common/change_password.dart';
 import 'package:online_clinic_appointment/screens/common/dashboard.dart';
 import 'package:online_clinic_appointment/screens/doctor/patient_record.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
@@ -78,10 +79,31 @@ class DoctorHomeState extends State<DoctorHome> {
           children: [
             ListTile(
               dense: true,
-              leading: Icon(
-                Icons.account_circle_rounded,
-                color: primaryColor.withOpacity(0.8),
-                size: 42,
+              leading: PopupMenuButton(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
+                onSelected: (value) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => const ChangePassword())));
+                },
+                padding: const EdgeInsets.all(0),
+                position: PopupMenuPosition.under,
+                itemBuilder: (context) => [
+                  const PopupMenuItem(
+                    value: 1,
+                    child: Text('Update Password'),
+                  )
+                ],
+                icon: Icon(
+                  Icons.account_circle_rounded,
+                  color: primaryColor.withOpacity(0.8),
+                  size: 46,
+                ),
               ),
               title: const Text(
                 'Hello, Doc',

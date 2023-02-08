@@ -29,13 +29,16 @@ class Services {
         },
         body: json.encode({
           "data": {
-            "name": patient.name,
+            "firstname": patient.firstname,
+            "lastname": patient.lastname,
+            "middlename": patient.midname,
             "gender": patient.gender,
             "birthday": Utils.fromDateTimeToJson(patient.birthday),
             "address": patient.address,
             "contact_number": patient.contactNumber,
             "account": patient.account!.id,
-            "status": patient.status
+            "status": patient.status,
+            "age": patient.age
           }
         }));
   }
@@ -52,13 +55,16 @@ class Services {
         },
         body: json.encode({
           "data": {
-            "name": patient.name,
+            "firstname": patient.firstname,
+            "lastname": patient.lastname,
+            "middlename": patient.midname,
             "gender": patient.gender,
             "birthday": Utils.fromDateTimeToJson(patient.birthday),
             "address": patient.address,
             "contact_number": patient.contactNumber,
             "account": patient.account!.id,
-            "status": patient.status
+            "status": patient.status,
+            "age": patient.age
           }
         }));
   }
@@ -295,6 +301,7 @@ class Services {
             "doctor": record.doctor!.id,
             "patient": record.patient!.id,
             "appointment": record.appointment!.id,
+            "record_date": Utils.fromDateTimeToJson(record.recordDate)
           }
         }));
   }

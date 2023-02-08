@@ -4,7 +4,6 @@ import 'package:online_clinic_appointment/utils.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class AppointmentDataSource extends DataGridSource {
-  /// Creates the employee data source class with required details.
   AppointmentDataSource({required List<Appointment> appoinments}) {
     _appointmentData = appoinments
         .asMap()
@@ -15,7 +14,9 @@ class AppointmentDataSource extends DataGridSource {
                   columnName: 'time',
                   value: Utils.displayTime(e.value.schedule.time)),
               DataGridCell<String>(
-                  columnName: 'name', value: e.value.patient.name),
+                  columnName: 'name',
+                  value:
+                      '${e.value.patient.lastname}, ${e.value.patient.firstname}, ${e.value.patient.midname}'),
               DataGridCell<String>(
                   columnName: 'status',
                   value: e.value.status! ? 'Done' : 'Pending'),

@@ -53,7 +53,8 @@ class _AppoinmentDetailsState extends State<AppoinmentDetails> {
                   buildLabel("Appointment Id"),
                   buildValue(widget.appointment.app_code),
                   buildLabel("Patient's Name"),
-                  buildValue(widget.appointment.patient.name),
+                  buildValue(
+                      '${widget.appointment.patient.lastname}, ${widget.appointment.patient.firstname}, ${widget.appointment.patient.midname}'),
                   buildLabel("Appointment Date"),
                   buildValue(
                       Utils.displayDate(widget.appointment.schedule.date)),

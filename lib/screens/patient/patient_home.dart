@@ -9,6 +9,7 @@ import 'package:online_clinic_appointment/models/message.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/screens/common/appointment_details.dart';
+import 'package:online_clinic_appointment/screens/common/change_password.dart';
 import 'package:online_clinic_appointment/screens/patient/book_appointment.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_appointments.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_profile.dart';
@@ -51,20 +52,22 @@ class PatientHomeState extends State<PatientHome> {
       if (json != null) {
         patient = Patient.fromLocalJson(jsonDecode(json));
         setState(() {
-          display = 'Edit';
+          display = 'Update';
         });
       } else {
         Services.getPatientProfile().then((value) {
           if (value.statusCode == 200) {
             Map parse = jsonDecode(value.body);
 
-            patient = Patient.fromJson(List.from(parse["data"])[0]);
+            if (List.from(parse["data"]).isNotEmpty) {
+              patient = Patient.fromJson(List.from(parse["data"])[0]);
 
-            setState(() {
-              display = 'Edit';
-            });
+              setState(() {
+                display = 'Update';
+              });
 
-            Services.savePatientProfile(patient!);
+              Services.savePatientProfile(patient!);
+            }
           }
         });
       }
@@ -111,13 +114,34 @@ class PatientHomeState extends State<PatientHome> {
               )
             : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 ListTile(
-                  leading: Icon(
-                    Icons.account_circle_rounded,
-                    color: primaryColor.withOpacity(0.8),
-                    size: 46,
+                  leading: PopupMenuButton(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    onSelected: (value) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => const ChangePassword())));
+                    },
+                    padding: const EdgeInsets.all(0),
+                    position: PopupMenuPosition.under,
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 1,
+                        child: Text('Update Password'),
+                      )
+                    ],
+                    icon: Icon(
+                      Icons.account_circle_rounded,
+                      color: primaryColor.withOpacity(0.8),
+                      size: 46,
+                    ),
                   ),
                   title: Text(
-                    'Hello, $username',
+                    'Hello, ${patient == null ? 'Patient' : patient!.firstname}',
                     style: const TextStyle(color: textColor),
                   ),
                   trailing: GestureDetector(
@@ -172,7 +196,7 @@ class PatientHomeState extends State<PatientHome> {
                   ),
                 ),
                 const SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 Padding(
                   padding:
@@ -209,7 +233,7 @@ class PatientHomeState extends State<PatientHome> {
                           borderRadius: BorderRadius.circular(15)),
                       child: ListTile(
                         title: Text(
-                          'Book an appointment',
+                          'Schedule an appointment',
                           style: TextStyle(
                               color: textColor.withOpacity(0.6), fontSize: 14),
                         ),
@@ -244,7 +268,7 @@ class PatientHomeState extends State<PatientHome> {
                           borderRadius: BorderRadius.circular(15)),
                       child: ListTile(
                         title: Text(
-                          'Your appointments',
+                          'Appointment history',
                           style: TextStyle(
                               color: textColor.withOpacity(0.6), fontSize: 14),
                         ),
@@ -256,44 +280,55 @@ class PatientHomeState extends State<PatientHome> {
                     ),
                   ),
                 ),
-              ]),
-        floatingActionButton: GestureDetector(
-          onTap: () {
-            showModalBottomSheet(
-              context: context,
-              isDismissible: false,
-              isScrollControlled: true,
-              backgroundColor: Colors.transparent,
-              builder: (context) => Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(15.0),
-                      topRight: Radius.circular(15.0),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isDismissible: false,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) => Padding(
+                          padding: EdgeInsets.only(
+                              bottom: MediaQuery.of(context).viewInsets.bottom),
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15.0),
+                                topRight: Radius.circular(15.0),
+                              ),
+                            ),
+                            child: ChatBox(
+                                saveMessages: (List<Message> messages) {
+                                  this.messages = messages;
+                                },
+                                messages: messages),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textColor.withOpacity(0.1)),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: ListTile(
+                        title: Text(
+                          'Talk to our chatbot',
+                          style: TextStyle(
+                              color: textColor.withOpacity(0.6), fontSize: 14),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: textColor.withOpacity(0.6),
+                        ),
+                      ),
                     ),
                   ),
-                  child: ChatBox(
-                      saveMessages: (List<Message> messages) {
-                        this.messages = messages;
-                      },
-                      messages: messages),
-                ),
-              ),
-            );
-          },
-          child: Container(
-            width: 56,
-            height: 80,
-            alignment: Alignment.center,
-            decoration: const BoxDecoration(
-                shape: BoxShape.circle, color: primaryColor),
-            child: Icon(
-                size: 38, Icons.contact_support_rounded, color: Colors.white),
-          ),
-        ),
+                )
+              ]),
       ),
     );
   }

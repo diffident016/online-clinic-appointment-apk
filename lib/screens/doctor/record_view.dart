@@ -41,7 +41,8 @@ class _RecordViewState extends State<RecordView> {
           width: double.infinity,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            buildField('Name:', widget.patient.name),
+            buildField('Name:',
+                '${widget.patient.lastname}, ${widget.patient.firstname}, ${widget.patient.midname}'),
             buildField('Age:', widget.patient.age.toString()),
             buildField('Gender:', widget.patient.gender),
             buildField('Address:', widget.patient.address),

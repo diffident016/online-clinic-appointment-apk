@@ -8,6 +8,7 @@ import 'package:online_clinic_appointment/models/patient.dart';
 import 'package:online_clinic_appointment/provider/user_account.dart';
 import 'package:online_clinic_appointment/widgets/loading_dialog.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
+import 'package:age_calculator/age_calculator.dart';
 
 import '../../widgets/buttons.dart';
 
@@ -30,15 +31,23 @@ class PatientProfileState extends State<PatientProfile> {
   AutovalidateMode autovalidate = AutovalidateMode.disabled;
 
   String? name;
+  String? firstname;
+  String? lastname;
+  String? midname;
   String? gender;
   String? address;
   String? phone;
   int? age;
 
+  DateDuration? duration;
+
+  String specialChar =
+      r'^[^<>{}\"/|;:.,~!?@#$%^=&*\\]\\\\()\\[¿§«»ω⊙¤°℃℉€¥£¢¡®©0-9_+]*$';
+
   @override
   void initState() {
     super.initState();
-    textController = List.generate(5, (i) => TextEditingController());
+    textController = List.generate(7, (i) => TextEditingController());
 
     checkPatientProfile();
   }
@@ -47,12 +56,14 @@ class PatientProfileState extends State<PatientProfile> {
     if (widget.patient != null) {
       if (mounted) {
         setState(() {
-          name = widget.patient!.name;
-          gender = widget.patient!.gender;
-          address = widget.patient!.address;
-          phone = widget.patient!.contactNumber;
+          textController[0].text = widget.patient!.firstname;
+          textController[1].text = widget.patient!.lastname;
+          textController[2].text = widget.patient!.midname;
+          textController[3].text = widget.patient!.gender;
+          textController[5].text = widget.patient!.address;
+          textController[6].text = widget.patient!.contactNumber;
           birthdate = widget.patient!.birthday;
-          age = widget.patient!.age;
+          textController[4].text = widget.patient!.age.toString();
         });
       }
     }
@@ -67,8 +78,11 @@ class PatientProfileState extends State<PatientProfile> {
     );
 
     if (d != null) {
+      duration = AgeCalculator.age(d);
+
       setState(() {
         birthdate = d;
+        textController[4].text = duration!.years.toString();
       });
     }
   }
@@ -81,7 +95,7 @@ class PatientProfileState extends State<PatientProfile> {
       appBar: AppBar(
         backgroundColor: primaryColor,
         title: const Text(
-          'Patient Basic Profile',
+          'Patient Profile',
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -96,27 +110,66 @@ class PatientProfileState extends State<PatientProfile> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(
-                height: 20,
+                height: 10,
               ),
-              inputLabel('Full Name'),
+              inputLabel('First Name'),
               inputField(
                   controller: textController[0],
-                  hint: name ?? "Last Name, First Name, M.I.",
+                  hint: firstname ?? "",
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return ("Full name is required");
+                      return ("First name is required");
+                    }
+
+                    if (RegExp(r'[!@#$%^&*(),.?":{}|<>0-9+-=;_\^/]')
+                        .hasMatch(value)) {
+                      return ("Special characters is not allowed.");
                     }
 
                     return null;
                   },
                   inputType: TextInputType.text),
-              inputLabel('Gender'),
+              inputLabel('Last Name'),
               inputField(
-                  hint: gender,
                   controller: textController[1],
+                  hint: lastname ?? "",
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return ("Gender is required");
+                      return ("Last name is required");
+                    }
+
+                    if (RegExp(r'[!@#$%^&*(),.?":{}|<>0-9+-=;_\^/]')
+                        .hasMatch(value)) {
+                      return ("Special characters is not allowed.");
+                    }
+
+                    return null;
+                  },
+                  inputType: TextInputType.text),
+              inputLabel('Middle Name'),
+              inputField(
+                  controller: textController[2],
+                  hint: midname ?? "",
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return ("Middle name is required");
+                    }
+
+                    if (RegExp(r'[!@#$%^&*(),.?":{}|<>0-9+-=;_\^/]')
+                        .hasMatch(value)) {
+                      return ("Special characters is not allowed.");
+                    }
+
+                    return null;
+                  },
+                  inputType: TextInputType.text),
+              inputLabel('Sex'),
+              inputField(
+                  hint: gender,
+                  controller: textController[3],
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return ("Sex is required");
                     }
 
                     return null;
@@ -131,8 +184,8 @@ class PatientProfileState extends State<PatientProfile> {
                         children: [
                           inputLabel('Age'),
                           inputField(
-                              hint: age == null ? null : age.toString(),
-                              controller: textController[2],
+                              hint: age == null ? '' : age.toString(),
+                              controller: textController[4],
                               validator: (value) {
                                 if (value!.isEmpty) {
                                   return ("Age is required");
@@ -196,7 +249,7 @@ class PatientProfileState extends State<PatientProfile> {
               inputLabel('Complete Address'),
               inputField(
                   hint: address,
-                  controller: textController[3],
+                  controller: textController[5],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return ("Address is required");
@@ -208,7 +261,7 @@ class PatientProfileState extends State<PatientProfile> {
               inputLabel('Phone Number'),
               inputField(
                   hint: phone,
-                  controller: textController[4],
+                  controller: textController[6],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return ("Phone number is required");
@@ -226,15 +279,21 @@ class PatientProfileState extends State<PatientProfile> {
                   FocusScope.of(context).unfocus();
 
                   if (widget.patient != null) {
-                    if (textController[0].text.trim().isEmpty &&
-                        textController[1].text.trim().isEmpty &&
-                        textController[2].text.trim().isEmpty &&
-                        textController[3].text.trim().isEmpty &&
-                        textController[4].text.trim().isEmpty &&
+                    if (textController[0].text == widget.patient!.firstname &&
+                        textController[1].text == widget.patient!.lastname &&
+                        textController[2].text == widget.patient!.midname &&
+                        textController[3].text == widget.patient!.gender &&
+                        textController[4].text ==
+                            widget.patient!.age.toString() &&
+                        textController[5].text == widget.patient!.address &&
+                        textController[6].text ==
+                            widget.patient!.contactNumber &&
                         widget.patient!.birthday == birthdate) {
                       return;
                     }
-                  } else if (_formKey.currentState!.validate()) {
+                  }
+
+                  if (_formKey.currentState!.validate()) {
                     if (birthdate == null) {
                       ShowInfo.showUpDialog(context,
                           title: "Required Info",
@@ -251,23 +310,30 @@ class PatientProfileState extends State<PatientProfile> {
                   }
 
                   final patient = Patient(
-                      name: textController[0].text.trim().isEmpty
-                          ? name!
+                      firstname: textController[0].text.trim().isEmpty
+                          ? firstname!
                           : textController[0].text.trim(),
-                      gender: textController[1].text.trim().isEmpty
-                          ? gender!
+                      lastname: textController[1].text.trim().isEmpty
+                          ? lastname!
                           : textController[1].text.trim(),
-                      birthday: birthdate ?? birthdate!,
-                      address: textController[3].text.trim().isEmpty
-                          ? address!
+                      midname: textController[2].text.trim().isEmpty
+                          ? midname!
+                          : textController[2].text.trim(),
+                      gender: textController[3].text.trim().isEmpty
+                          ? gender!
                           : textController[3].text.trim(),
-                      contactNumber: textController[4].text.trim().isEmpty
+                      birthday: birthdate ?? birthdate!,
+                      address: textController[5].text.trim().isEmpty
+                          ? address!
+                          : textController[5].text.trim(),
+                      contactNumber: textController[6].text.trim().isEmpty
                           ? phone!
-                          : textController[4].text.trim(),
+                          : textController[6].text.trim(),
                       account: UserAccount.user!,
-                      age: textController[2].text.trim().isEmpty
+                      age: textController[4].text.trim().isEmpty
                           ? age!
-                          : int.parse(textController[2].text));
+                          : int.parse(textController[4].text),
+                      id: widget.patient == null ? null : widget.patient!.id);
 
                   showDialog(
                       barrierDismissible: false,
@@ -333,12 +399,29 @@ class PatientProfileState extends State<PatientProfile> {
     );
   }
 
-  Widget inputLabel(String label) {
+  Widget inputLabel(String label, {bool? req = false}) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Text(
-        label,
-        style: const TextStyle(color: textColor, fontSize: 16),
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            WidgetSpan(
+              child: Text(
+                label,
+                style: const TextStyle(color: textColor, fontSize: 16),
+              ),
+            ),
+            const WidgetSpan(
+              child: SizedBox(width: 2),
+            ),
+            if (widget.patient == null && req!)
+              const WidgetSpan(
+                  child: Text(
+                '*',
+                style: TextStyle(color: Colors.red, fontSize: 15),
+              ))
+          ],
+        ),
       ),
     );
   }
@@ -360,7 +443,7 @@ class PatientProfileState extends State<PatientProfile> {
           isCollapsed: true,
           hintText: hint,
           hintStyle: TextStyle(color: textColor.withOpacity(0.4)),
-          contentPadding: const EdgeInsets.fromLTRB(15, 10, 10, 10),
+          contentPadding: const EdgeInsets.fromLTRB(15, 8, 8, 10),
           border: OutlineInputBorder(
               borderSide: const BorderSide(color: Colors.black),
               borderRadius: BorderRadius.circular(10)),

@@ -111,6 +111,7 @@ class UserAccount extends ChangeNotifier {
             'username': name,
             'email': email,
             'password': password,
+            'userType': 'patient'
           }).then((response) {
         parsed = json.decode(response.body);
         if (response.statusCode == 200) {
@@ -143,6 +144,7 @@ class UserAccount extends ChangeNotifier {
             'password': password,
           }).then((response) {
         parsed = json.decode(response.body);
+
         if (response.statusCode == 200) {
           _saveUser(parsed["jwt"], parsed["user"], 0);
 
@@ -163,8 +165,28 @@ class UserAccount extends ChangeNotifier {
   }
 
   static Future logout() async {
+    _removeUser();
     controller.add(0);
-    return _removeUser();
+    return;
+  }
+
+  static Future<http.Response> updatePassword(
+      {required String currentPassword,
+      required String newPassword,
+      required String confirmPass}) async {
+    return await http.post(
+        Uri.parse(
+          "$apiAddress/api/auth/change-password",
+        ),
+        headers: <String, String>{
+          'Context-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: {
+          'currentPassword': currentPassword,
+          'password': newPassword,
+          'passwordConfirmation': confirmPass
+        });
   }
 }
 
