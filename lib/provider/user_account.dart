@@ -111,6 +111,7 @@ class UserAccount extends ChangeNotifier {
             'username': name,
             'email': email,
             'password': password,
+            'userType': 'patient'
           }).then((response) {
         parsed = json.decode(response.body);
         if (response.statusCode == 200) {
