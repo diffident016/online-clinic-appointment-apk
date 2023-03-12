@@ -95,17 +95,17 @@ class SignUpState extends State<SignUp> {
                         const SizedBox(
                           height: 20,
                         ),
-                        inputLabel('Full Name'),
-                        inputField(
-                            controller: _name,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return ("Full name is required");
-                              }
+                        // inputLabel('Full Name'),
+                        // inputField(
+                        //     controller: _name,
+                        //     validator: (value) {
+                        //       if (value!.isEmpty) {
+                        //         return ("Full name is required");
+                        //       }
 
-                              return null;
-                            },
-                            inputType: TextInputType.text),
+                        //       return null;
+                        //     },
+                        //     inputType: TextInputType.text),
                         inputLabel('Email Address'),
                         inputField(
                             controller: _email,
