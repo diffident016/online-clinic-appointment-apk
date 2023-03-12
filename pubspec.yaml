@@ -49,6 +49,7 @@ dependencies:
   visibility_detector: ^0.3.3
   chat_bubbles: ^1.4.0
   age_calculator: ^1.0.0
+  nanoid: ^1.0.0
 
 dev_dependencies:
   flutter_test:
