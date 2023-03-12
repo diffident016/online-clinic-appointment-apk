@@ -21,6 +21,8 @@ class LoginState extends State<Login> {
   final _password = TextEditingController();
 
   bool rememberPassword = false;
+  bool obscurePassword = true;
+  bool viewPassword = false;
 
   late FlutterSecureStorage storage;
 
@@ -116,7 +118,41 @@ class LoginState extends State<Login> {
                             }
                             return null;
                           },
-                          obscured: true),
+                          obscured: obscurePassword),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 25,
+                              height: 24,
+                              child: Checkbox(
+                                value: viewPassword,
+                                checkColor: Colors.white,
+                                activeColor: primaryColor,
+                                onChanged: (value) {
+                                  setState(() {
+                                    viewPassword = value!;
+                                    obscurePassword = !value;
+                                  });
+                                },
+                                side: BorderSide(
+                                    width: 1,
+                                    color: textColor.withOpacity(0.5)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(2)),
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            const Text(
+                              'View Password',
+                              style: TextStyle(color: textColor, fontSize: 12),
+                            )
+                          ],
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 15),
                         child: Row(
