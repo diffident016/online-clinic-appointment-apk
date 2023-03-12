@@ -13,6 +13,7 @@ import 'package:online_clinic_appointment/screens/common/change_password.dart';
 import 'package:online_clinic_appointment/screens/patient/book_appointment.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_appointments.dart';
 import 'package:online_clinic_appointment/screens/patient/patient_profile.dart';
+import 'package:online_clinic_appointment/screens/patient/patient_record.dart';
 import 'package:online_clinic_appointment/widgets/chat_box.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
 
@@ -48,19 +49,21 @@ class PatientHomeState extends State<PatientHome> {
   void getPatientProfile() async {
     try {
       final json = await storage.read(key: 'patient');
-
       if (json != null) {
         patient = Patient.fromLocalJson(jsonDecode(json));
+        await storage.write(key: 'patientId', value: patient!.id.toString());
         setState(() {
           display = 'Update';
         });
       } else {
-        Services.getPatientProfile().then((value) {
+        Services.getPatientProfile().then((value) async {
           if (value.statusCode == 200) {
             Map parse = jsonDecode(value.body);
 
             if (List.from(parse["data"]).isNotEmpty) {
               patient = Patient.fromJson(List.from(parse["data"])[0]);
+              await storage.write(
+                  key: 'patientId', value: patient!.id.toString());
 
               setState(() {
                 display = 'Update';
@@ -269,6 +272,40 @@ class PatientHomeState extends State<PatientHome> {
                       child: ListTile(
                         title: Text(
                           'Appointment history',
+                          style: TextStyle(
+                              color: textColor.withOpacity(0.6), fontSize: 14),
+                        ),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: textColor.withOpacity(0.6),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (patient == null) {
+                        ShowInfo.showToast(
+                            "You need to setup your patient profile first.");
+                        return;
+                      }
+
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => PatientOnlyRecord())));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: textColor.withOpacity(0.1)),
+                          borderRadius: BorderRadius.circular(15)),
+                      child: ListTile(
+                        title: Text(
+                          'My Records',
                           style: TextStyle(
                               color: textColor.withOpacity(0.6), fontSize: 14),
                         ),
