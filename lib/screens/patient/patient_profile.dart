@@ -177,26 +177,6 @@ class PatientProfileState extends State<PatientProfile> {
                   inputType: TextInputType.text),
               Row(
                 children: [
-                  SizedBox(
-                    width: (size.width - 60) / 3,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          inputLabel('Age'),
-                          inputField(
-                              hint: age == null ? '' : age.toString(),
-                              controller: textController[4],
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return ("Age is required");
-                                }
-
-                                return null;
-                              },
-                              inputType: TextInputType.number),
-                        ]),
-                  ),
-                  const SizedBox(width: 20),
                   Expanded(
                     child: SizedBox(
                       child: Column(
@@ -243,6 +223,26 @@ class PatientProfileState extends State<PatientProfile> {
                             ),
                           ]),
                     ),
+                  ),
+                  const SizedBox(width: 20),
+                  SizedBox(
+                    width: (size.width - 60) / 3,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          inputLabel('Age'),
+                          inputField(
+                              hint: age == null ? '' : age.toString(),
+                              controller: textController[4],
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return ("Age is required");
+                                }
+
+                                return null;
+                              },
+                              inputType: TextInputType.number),
+                        ]),
                   ),
                 ],
               ),
