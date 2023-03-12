@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:online_clinic_appointment/models/appointment.dart';
 import 'package:online_clinic_appointment/models/doctor.dart';
 import 'package:online_clinic_appointment/models/patient.dart';
@@ -19,6 +20,8 @@ class Services {
 
   static Future<http.Response> setupPatientProfile(
       {required Patient patient}) async {
+    var dateNow = DateTime.now();
+    var userId = DateFormat("yyyyMMddHHmmss").format(dateNow);
     return await http.post(
         Uri.parse(
           "$apiAddress/api/patients?deeply=true",
@@ -38,7 +41,8 @@ class Services {
             "contact_number": patient.contactNumber,
             "account": patient.account!.id,
             "status": patient.status,
-            "age": patient.age
+            "age": patient.age,
+            "user_id": "P${userId}"
           }
         }));
   }
