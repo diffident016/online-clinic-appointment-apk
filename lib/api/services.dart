@@ -76,6 +76,7 @@ class Services {
   static savePatientProfile(Patient patient) async {
     try {
       await _storage.write(key: 'patient', value: jsonEncode(patient));
+      await _storage.write(key: 'patientId', value: jsonEncode(patient.id));
     } on Exception catch (_) {
       return null;
     }
