@@ -6,6 +6,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:online_clinic_appointment/models/user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:online_clinic_appointment/widgets/showInfo.dart';
+import 'package:nanoid/nanoid.dart';
 
 import '../utils.dart';
 
@@ -108,7 +109,7 @@ class UserAccount extends ChangeNotifier {
             'Context-Type': 'application/json; charset=UTF-8',
           },
           body: {
-            'username': name,
+            'username': nanoid(),
             'email': email,
             'password': password,
             'userType': 'patient'
