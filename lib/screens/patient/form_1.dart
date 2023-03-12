@@ -173,6 +173,14 @@ class Form1State extends State<Form1> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                const Padding(
+                  padding: EdgeInsets.only(top: 5, bottom: 10),
+                  child: Text(
+                    'Note: This clinic will only cater 11 patients per day',
+                    style: TextStyle(
+                        color: Colors.red, fontWeight: FontWeight.w400),
+                  ),
+                ),
                 Text(
                   'SELECT DATE',
                   style: TextStyle(
@@ -479,9 +487,9 @@ class Form1State extends State<Form1> {
                     onClick: () {
                       FocusScope.of(context).unfocus();
                       if (valid) {
-                        final appointId =
-                            DateFormat("yyyyMMdd").format(widget.selectedDay!) +
-                                DateFormat("HHmm").format(widget.selectedTime!);
+                        final appointId = DateFormat("yyyyMMdd")
+                                .format(widget.selectedDay!) +
+                            DateFormat("HHmmss").format(widget.selectedTime!);
 
                         final appointment = Appointment(
                             app_code: appointId,
