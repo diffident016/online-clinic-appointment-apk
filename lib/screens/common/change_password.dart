@@ -21,6 +21,13 @@ class _ChangePasswordState extends State<ChangePassword> {
   final _newPassword = TextEditingController();
   final _cPassword = TextEditingController();
 
+  bool viewCurrentPassword = false;
+  bool obscureCurrentPassword = true;
+  bool viewNewPassword = false;
+  bool obscureNewPassword = true;
+  bool viewConfirmPassword = false;
+  bool obscureConfirmPassword = true;
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -63,7 +70,39 @@ class _ChangePasswordState extends State<ChangePassword> {
                     }
                     return null;
                   },
-                  obscured: true),
+                  obscured: obscureCurrentPassword),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 25,
+                      child: Checkbox(
+                        value: viewCurrentPassword,
+                        checkColor: Colors.white,
+                        activeColor: primaryColor,
+                        onChanged: (value) {
+                          setState(() {
+                            viewCurrentPassword = value!;
+                            obscureCurrentPassword = !value;
+                          });
+                        },
+                        side: BorderSide(
+                            width: 1, color: textColor.withOpacity(0.5)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2)),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Text(
+                      'View Current Password',
+                      style: TextStyle(color: textColor, fontSize: 12),
+                    )
+                  ],
+                ),
+              ),
               inputLabel("New Password"),
               inputField(
                   controller: _newPassword,
@@ -73,7 +112,39 @@ class _ChangePasswordState extends State<ChangePassword> {
                     }
                     return null;
                   },
-                  obscured: true),
+                  obscured: obscureNewPassword),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 25,
+                      child: Checkbox(
+                        value: viewNewPassword,
+                        checkColor: Colors.white,
+                        activeColor: primaryColor,
+                        onChanged: (value) {
+                          setState(() {
+                            viewNewPassword = value!;
+                            obscureNewPassword = !value;
+                          });
+                        },
+                        side: BorderSide(
+                            width: 1, color: textColor.withOpacity(0.5)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2)),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Text(
+                      'View New Password',
+                      style: TextStyle(color: textColor, fontSize: 12),
+                    )
+                  ],
+                ),
+              ),
               inputLabel("Confirm New Password"),
               inputField(
                   controller: _cPassword,
@@ -87,7 +158,39 @@ class _ChangePasswordState extends State<ChangePassword> {
                     }
                     return null;
                   },
-                  obscured: true),
+                  obscured: obscureConfirmPassword),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 3),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 25,
+                      child: Checkbox(
+                        value: viewConfirmPassword,
+                        checkColor: Colors.white,
+                        activeColor: primaryColor,
+                        onChanged: (value) {
+                          setState(() {
+                            viewConfirmPassword = value!;
+                            obscureConfirmPassword = !value;
+                          });
+                        },
+                        side: BorderSide(
+                            width: 1, color: textColor.withOpacity(0.5)),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(2)),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    const Text(
+                      'View Confirm Password',
+                      style: TextStyle(color: textColor, fontSize: 12),
+                    )
+                  ],
+                ),
+              ),
               const SizedBox(
                 height: 20,
               ),
