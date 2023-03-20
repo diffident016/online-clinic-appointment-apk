@@ -21,6 +21,11 @@ class SignUpState extends State<SignUp> {
   final _name = TextEditingController();
   final _cpassword = TextEditingController();
 
+  bool viewPassword = false;
+  bool obscurePassword = true;
+  bool viewConfirmPassword = false;
+  bool obscureConfirmPassword = true;
+
   void signUp() {
     FocusScope.of(context).unfocus();
     try {
@@ -130,7 +135,41 @@ class SignUpState extends State<SignUp> {
                               }
                               return null;
                             },
-                            obscured: true),
+                            obscured: obscurePassword),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 25,
+                                child: Checkbox(
+                                  value: viewPassword,
+                                  checkColor: Colors.white,
+                                  activeColor: primaryColor,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      viewPassword = value!;
+                                      obscurePassword = !value;
+                                    });
+                                  },
+                                  side: BorderSide(
+                                      width: 1,
+                                      color: textColor.withOpacity(0.5)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(2)),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text(
+                                'View Password',
+                                style:
+                                    TextStyle(color: textColor, fontSize: 12),
+                              )
+                            ],
+                          ),
+                        ),
                         inputLabel('Confirm Password'),
                         inputField(
                             controller: _cpassword,
@@ -144,7 +183,41 @@ class SignUpState extends State<SignUp> {
                               }
                               return null;
                             },
-                            obscured: true),
+                            obscured: obscureConfirmPassword),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3),
+                          child: Row(
+                            children: [
+                              SizedBox(
+                                width: 25,
+                                child: Checkbox(
+                                  value: viewConfirmPassword,
+                                  checkColor: Colors.white,
+                                  activeColor: primaryColor,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      viewConfirmPassword = value!;
+                                      obscureConfirmPassword = !value;
+                                    });
+                                  },
+                                  side: BorderSide(
+                                      width: 1,
+                                      color: textColor.withOpacity(0.5)),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(2)),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              const Text(
+                                'View Confirm Password',
+                                style:
+                                    TextStyle(color: textColor, fontSize: 12),
+                              )
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 30),
                         Buttons(
                             label: 'SIGN UP',
