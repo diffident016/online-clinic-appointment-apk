@@ -162,57 +162,65 @@ class DashboardState extends State<Dashboard> {
           child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const Padding(
+                padding: EdgeInsets.only(top: 5, bottom: 10),
+                child: Text(
+                  'Note: This clinic will only cater 11 patients per day',
+                  style:
+                      TextStyle(color: Colors.red, fontWeight: FontWeight.w400),
+                ),
+              ),
               Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: textColor.withOpacity(0.2)),
-                      borderRadius: BorderRadius.circular(10)),
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
-                  child: TableCalendar(
-                    focusedDay: _focusedDay,
-                    calendarFormat: _calendarFormat,
-                    headerVisible: true,
-                    headerStyle: const HeaderStyle(
-                        titleCentered: true,
-                        titleTextStyle: TextStyle(
-                            fontSize: 15,
-                            fontFamily: "Poppins",
-                            color: textColor),
-                        formatButtonVisible: false,
-                        leftChevronPadding: EdgeInsets.zero,
-                        rightChevronPadding: EdgeInsets.zero,
-                        leftChevronIcon: Icon(Icons.chevron_left, size: 26),
-                        rightChevronIcon: Icon(Icons.chevron_right, size: 26)),
-                    firstDay: DateTime.utc(2010, 10, 16),
-                    lastDay: DateTime.utc(2030, 3, 14),
-                    rowHeight: 36,
-                    calendarStyle: CalendarStyle(
-                        selectedDecoration: const BoxDecoration(
-                          color: primaryColor,
-                          shape: BoxShape.rectangle,
-                        ),
-                        todayDecoration: BoxDecoration(
-                          color: primaryColor.withOpacity(0.5),
-                          shape: BoxShape.rectangle,
-                        ),
-                        todayTextStyle:
-                            const TextStyle(fontSize: 14, color: Colors.white),
-                        selectedTextStyle:
-                            const TextStyle(fontSize: 14, color: Colors.white)),
-                    selectedDayPredicate: (day) {
-                      return isSameDay(_selectedDay, day);
-                    },
-                    onDaySelected: (selectedDay, focusedDay) {
-                      FocusScope.of(context).unfocus();
+                decoration: BoxDecoration(
+                    border: Border.all(color: textColor.withOpacity(0.2)),
+                    borderRadius: BorderRadius.circular(10)),
+                padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 4),
+                child: TableCalendar(
+                  focusedDay: _focusedDay,
+                  calendarFormat: _calendarFormat,
+                  headerVisible: true,
+                  headerStyle: const HeaderStyle(
+                      titleCentered: true,
+                      titleTextStyle: TextStyle(
+                          fontSize: 15,
+                          fontFamily: "Poppins",
+                          color: textColor),
+                      formatButtonVisible: false,
+                      leftChevronPadding: EdgeInsets.zero,
+                      rightChevronPadding: EdgeInsets.zero,
+                      leftChevronIcon: Icon(Icons.chevron_left, size: 26),
+                      rightChevronIcon: Icon(Icons.chevron_right, size: 26)),
+                  firstDay: DateTime.utc(2010, 10, 16),
+                  lastDay: DateTime.utc(2030, 3, 14),
+                  rowHeight: 36,
+                  calendarStyle: CalendarStyle(
+                      selectedDecoration: const BoxDecoration(
+                        color: primaryColor,
+                        shape: BoxShape.rectangle,
+                      ),
+                      todayDecoration: BoxDecoration(
+                        color: primaryColor.withOpacity(0.5),
+                        shape: BoxShape.rectangle,
+                      ),
+                      todayTextStyle:
+                          const TextStyle(fontSize: 14, color: Colors.white),
+                      selectedTextStyle:
+                          const TextStyle(fontSize: 14, color: Colors.white)),
+                  selectedDayPredicate: (day) {
+                    return isSameDay(_selectedDay, day);
+                  },
+                  onDaySelected: (selectedDay, focusedDay) {
+                    FocusScope.of(context).unfocus();
 
-                      setState(() {
-                        _selectedDay = selectedDay;
-                        _focusedDay = focusedDay;
-                      });
+                    setState(() {
+                      _selectedDay = selectedDay;
+                      _focusedDay = focusedDay;
+                    });
 
-                      getAppointments(getDates(4));
-                    },
-                  )),
+                    getAppointments(getDates(4));
+                  },
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15),
                 child: SizedBox(
