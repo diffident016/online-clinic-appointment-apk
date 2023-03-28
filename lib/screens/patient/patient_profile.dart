@@ -59,7 +59,7 @@ class PatientProfileState extends State<PatientProfile> {
           textController[0].text = widget.patient!.firstname;
           textController[1].text = widget.patient!.lastname;
           textController[2].text = widget.patient!.midname;
-          textController[3].text = widget.patient!.gender;
+          gender = widget.patient!.gender;
           textController[5].text = widget.patient!.address;
           textController[6].text = widget.patient!.contactNumber;
           birthdate = widget.patient!.birthday;
@@ -164,17 +164,45 @@ class PatientProfileState extends State<PatientProfile> {
                   },
                   inputType: TextInputType.text),
               inputLabel('Sex'),
-              inputField(
-                  hint: gender,
-                  controller: textController[3],
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return ("Sex is required");
-                    }
+              // inputField(
+              //     hint: gender,
+              //     controller: textController[3],
+              //     validator: (value) {
+              //       if (value!.isEmpty) {
+              //         return ("Sex is required");
+              //       }
 
-                    return null;
-                  },
-                  inputType: TextInputType.text),
+              //       return null;
+              //     },
+              //     inputType: TextInputType.text),
+              Column(
+                children: [
+                  ListTile(
+                    title: const Text('Male'),
+                    leading: Radio(
+                      value: 'Male',
+                      groupValue: gender,
+                      onChanged: (value) {
+                        setState(() {
+                          gender = value as String?;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: const Text('Female'),
+                    leading: Radio(
+                      value: "Female",
+                      groupValue: gender,
+                      onChanged: (value) {
+                        setState(() {
+                          gender = value as String?;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
               Row(
                 children: [
                   Expanded(
@@ -282,7 +310,7 @@ class PatientProfileState extends State<PatientProfile> {
                     if (textController[0].text == widget.patient!.firstname &&
                         textController[1].text == widget.patient!.lastname &&
                         textController[2].text == widget.patient!.midname &&
-                        textController[3].text == widget.patient!.gender &&
+                        gender == widget.patient!.gender &&
                         textController[4].text ==
                             widget.patient!.age.toString() &&
                         textController[5].text == widget.patient!.address &&
@@ -299,6 +327,15 @@ class PatientProfileState extends State<PatientProfile> {
                           title: "Required Info",
                           message:
                               "Birthdate is required please input your birthdate.",
+                          action1: "Okay", btn1: () {
+                        Navigator.of(context).pop();
+                      });
+                      return;
+                    }
+                    if (gender == null) {
+                      ShowInfo.showUpDialog(context,
+                          title: "Required Info",
+                          message: "Sex is required please select your sex.",
                           action1: "Okay", btn1: () {
                         Navigator.of(context).pop();
                       });
