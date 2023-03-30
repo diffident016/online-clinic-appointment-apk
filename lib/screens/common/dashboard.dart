@@ -165,7 +165,7 @@ class DashboardState extends State<Dashboard> {
               const Padding(
                 padding: EdgeInsets.only(top: 5, bottom: 10),
                 child: Text(
-                  'Note: This clinic will only cater 11 patients per day',
+                  'This clinic will only cater 11 patients per day',
                   style:
                       TextStyle(color: Colors.red, fontWeight: FontWeight.w400),
                 ),
@@ -314,6 +314,23 @@ class DashboardState extends State<Dashboard> {
                   ),
                 ),
               ),
+              if (appointmentNo == 11)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10),
+                  child: SizedBox(
+                    height: 20,
+                    child: Row(
+                      children: [
+                        Text(
+                          'This day is fully booked.',
+                          style: TextStyle(
+                              color: primaryColor.withOpacity(0.8),
+                              fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               Container(
                 height: 235,
                 width: double.infinity,

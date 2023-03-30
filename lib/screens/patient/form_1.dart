@@ -176,7 +176,7 @@ class Form1State extends State<Form1> {
                 const Padding(
                   padding: EdgeInsets.only(top: 5, bottom: 10),
                   child: Text(
-                    'Note: This clinic will only cater 11 patients per day',
+                    'This clinic will only cater 11 patients per day',
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.w400),
                   ),
