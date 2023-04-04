@@ -201,6 +201,18 @@ class PatientProfileState extends State<PatientProfile> {
                       },
                     ),
                   ),
+                  ListTile(
+                    title: const Text('Other'),
+                    leading: Radio(
+                      value: "Other",
+                      groupValue: gender,
+                      onChanged: (value) {
+                        setState(() {
+                          gender = value as String?;
+                        });
+                      },
+                    ),
+                  ),
                 ],
               ),
               Row(
