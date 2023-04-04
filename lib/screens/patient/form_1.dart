@@ -249,7 +249,7 @@ class Form1State extends State<Form1> {
                             return;
                           }
 
-                          if (sel.isBefore(now) ||
+                          if (sel == now ||
                               sel.isAfter(now.add(const Duration(days: 21)))) {
                             ShowInfo.showToast('This day is not allowed.');
 
